@@ -51,7 +51,8 @@ public class UnitTests {
         try {
             int minTemp = -273;
             int maxTemp = 500;
-            assertTrue(currentWeatherData.get("main").getAsJsonObject().get("temp").getAsInt() >= minTemp && currentWeatherData.get("main").getAsJsonObject().get("temp").getAsInt() <= maxTemp);
+            double currentTemp = currentWeatherData.get("main").getAsJsonObject().get("temp").getAsInt();
+            assertTrue(currentTemp >= minTemp && currentTemp <= maxTemp);
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
