@@ -5,7 +5,6 @@ import weather.ForecastWeather;
 import weatherdata.WeatherData;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class WeatherGateway {
     private CurrentWeather currentWeather;
@@ -48,35 +47,6 @@ public class WeatherGateway {
         forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
     }
 
-    /*
-    private WeatherGateway(JsonObject currentWeather) throws IOException{
-        String city = "Tallinn";
-        String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
-        String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
-
-        weatherdata.WeatherData weatherData = new weatherdata.WeatherData();
-        this.currentWeather = currentWeather;
-        forecastWeather = weatherData.getJsonData(forecastWeatherUrl).get("list").getAsJsonArray();
-    }
-
-    private WeatherGateway(JsonArray forecastWeather) throws IOException{
-        String city = "Tallinn";
-        String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
-        String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
-
-        weatherdata.WeatherData weatherData = new weatherdata.WeatherData();
-        currentWeather = weatherData.getJsonData(currentWeatherUrl).getAsJsonObject();
-        this.forecastWeather = forecastWeather;
-    }
-
-    private WeatherGateway(JsonObject currentWeather, JsonArray forecastWeather) {
-
-
-        this.currentWeather = currentWeather;
-        this.forecastWeather = forecastWeather;
-    }
-    */
-
     static WeatherGateway getWeatherGatewayByCity() throws  IOException{
         return new WeatherGateway("Tallinn");
     }
@@ -107,19 +77,6 @@ public class WeatherGateway {
             }
         }
     }
-
-    /*
-    public static WeatherGateway getWeatherGatewayByCurrentWeather(JsonObject currentWeather) throws IOException{
-        return new WeatherGateway(currentWeather);
-    }
-
-    public static WeatherGateway getWeatherGatewayByForecastWeather(JsonArray forecastWeather) throws IOException{
-        return new WeatherGateway(forecastWeather);
-    }
-
-    public static WeatherGateway getWeatherGatewayByBoth(JsonObject currentWeather, JsonArray forecastWeather) throws IOException{
-        return new WeatherGateway(currentWeather, forecastWeather);
-    }*/
 
     JsonObject getForecastObjectFromArray(int index) {
         return forecastWeather.getForecastObjectFromArray(index);
