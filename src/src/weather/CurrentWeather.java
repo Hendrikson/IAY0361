@@ -59,8 +59,8 @@ public class CurrentWeather {
     public String getCityName() { return currentWeather.get("name").getAsString(); }
 
     public String getCurrentCityData() {
-        return "City : " + this.getCityName() + "\n" +
-                "Current Temperature : " + this.getCurrentTemperature() + "\n" +
+        return "City : " + this.getCityName() + " \n" +
+                "Current Temperature : " + this.getCurrentTemperature() + " \n" +
                 "Current Humidity : " + this.getCurrentHumidity();
     }
 
@@ -75,5 +75,13 @@ public class CurrentWeather {
         }
         CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
         System.out.println(currentWeather.getCurrentCityData());
+    }
+
+    public boolean equals(CurrentWeather currentWeather) {
+        return currentWeather != null &&
+                this.getCityName().equals(currentWeather.getCityName()) &&
+                this.getCurrentTemperature() == currentWeather.getCurrentTemperature() &&
+                this.getCurrentHumidity() == currentWeather.getCurrentHumidity() &&
+                this.getCountryCode().equals(currentWeather.getCountryCode());
     }
 }

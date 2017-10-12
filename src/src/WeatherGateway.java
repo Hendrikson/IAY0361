@@ -4,7 +4,8 @@ import weather.CurrentWeather;
 import weather.ForecastWeather;
 import weatherdata.WeatherData;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 
 public class WeatherGateway {
     private CurrentWeather currentWeather;
@@ -84,6 +85,29 @@ public class WeatherGateway {
         return new WeatherGateway(cityName);
     }
 
+    static void getWeatherGatewayByCityFromFile(String cityName) throws IOException{
+        if (cityName == null || cityName == "") cityName = "Tallinn";
+        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
+        String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
+        BufferedReader br;
+        FileReader fr;
+        fr = new FileReader(inputFileName);
+        br = new BufferedReader(fr);
+
+        String currentLine;
+        if ((currentLine = br.readLine()) != null) {
+            cityName = currentLine;
+        }
+        CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName), "utf-8"))){
+            String outputText = currentWeather.getCurrentCityData();
+            String[] outputPieces = outputText.split("\n");
+            for (int i = 0; i < outputPieces.length; i++) {
+                writer.write(outputPieces[i] + "\r\n");
+            }
+        }
+    }
+
     /*
     public static WeatherGateway getWeatherGatewayByCurrentWeather(JsonObject currentWeather) throws IOException{
         return new WeatherGateway(currentWeather);
@@ -127,12 +151,23 @@ public class WeatherGateway {
                 "Current Humidity : " + this.getCurrentHumidity();
     }
 
+    CurrentWeather getCurrentWeather() {
+        return currentWeather;
+    }
+
+    ForecastWeather getForecastWeather() {
+        return forecastWeather;
+    }
+
     public static void main(String[] args) throws IOException{
+        /*
         String cityName = "Tallinn";
         if (args.length > 0) {
             cityName = args[0];
         }
         WeatherGateway weatherGateway = WeatherGateway.getWeatherGatewayByCity(cityName);
         System.out.println(weatherGateway.getCurrentCityData());
+        */
+        getWeatherGatewayByCityFromFile("");
     }
 }

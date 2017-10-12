@@ -1,7 +1,9 @@
 import org.junit.BeforeClass;
 import org.junit.Test;
+import weather.CurrentWeather;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -71,6 +73,66 @@ public class UnitTests {
         try {
             String countryCode = weatherGateway.getCountryCode();
             assertTrue(countryCode.equals("EE"));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testChosenCityEquals() {
+        try {
+            assertTrue(weatherGateway.getCurrentWeather().equals(CurrentWeather.getCurrentWeatherByCity(weatherGateway.getCityName())));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testRandomCityEquals() {
+        try {
+            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
+            Random random = new Random();
+            String cityName = cityNames[random.nextInt(cityNames.length)];
+            System.out.println("testRandomCityEquals : " + cityName);
+
+            WeatherGateway weatherGatewayTest = weatherGateway;
+            weatherGatewayTest.getNewCurrentWeather(cityName);
+            assertTrue(weatherGatewayTest.getCurrentWeather().equals(CurrentWeather.getCurrentWeatherByCity(cityName)));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testWritingToFile() {
+        try {
+            // Choose a random city name from the list and write it into the input file.
+            // Generate the correct response from .getCurrentCityData and check whether
+            // Writing into file was successful or not.
+            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
+            Random random = new Random();
+            String cityName = cityNames[random.nextInt(cityNames.length)];
+            System.out.println("testWritingToFile : " + cityName);
+
+            String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
+            String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputFileName), "utf-8"))){
+                writer.write(cityName);
+            }
+            WeatherGateway.getWeatherGatewayByCityFromFile(cityName);
+            CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
+            BufferedReader br;
+            FileReader fr;
+            fr = new FileReader(outputFileName);
+            br = new BufferedReader(fr);
+            String fileTextLines = "";
+
+            String currentLine;
+            while ((currentLine = br.readLine()) != null) {
+                fileTextLines += currentLine + "\n";
+            }
+            fileTextLines = fileTextLines.substring(0, fileTextLines.length()-1);
+            assertTrue(currentWeather.getCurrentCityData().equals(fileTextLines));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }

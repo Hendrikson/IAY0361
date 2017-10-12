@@ -14,16 +14,16 @@ public class ForecastWeather {
         String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
-        forecastWeather = weatherData.getJsonData(forecastWeatherUrl).get("list").getAsJsonArray();
         weatherObject = weatherData.getJsonData(forecastWeatherUrl);
+        forecastWeather = weatherObject.get("list").getAsJsonArray();
     }
 
     private ForecastWeather(String cityName) throws IOException{
         String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
-        forecastWeather = weatherData.getJsonData(forecastWeatherUrl).get("list").getAsJsonArray();
         weatherObject = weatherData.getJsonData(forecastWeatherUrl);
+        forecastWeather = weatherObject.get("list").getAsJsonArray();
     }
 
     public static ForecastWeather getForecastWeather() throws IOException{
