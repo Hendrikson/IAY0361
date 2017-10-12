@@ -1,19 +1,50 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import weather.CurrentWeather;
+import weather.ForecastWeather;
+import weatherdata.WeatherData;
 
 import java.io.IOException;
 
 public class WeatherGateway {
-    private JsonObject currentWeather;
-    private JsonArray forecastWeather;
+    private CurrentWeather currentWeather;
+    private ForecastWeather forecastWeather;
 
     private WeatherGateway(String cityName) throws IOException{
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
         String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
-        currentWeather = weatherData.getJsonData(currentWeatherUrl).getAsJsonObject();
-        forecastWeather = weatherData.getJsonData(forecastWeatherUrl).get("list").getAsJsonArray();
+        currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
+        forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
+    }
+
+    public void getNewCurrentWeather() throws IOException{
+        String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
+
+        WeatherData weatherData = new WeatherData();
+        currentWeather = CurrentWeather.getCurrentWeather();
+    }
+
+    public void getNewCurrentWeather(String cityName) throws IOException{
+        String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
+
+        WeatherData weatherData = new WeatherData();
+        currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
+    }
+
+    public void getNewForecastWeather() throws IOException{
+        String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+
+        WeatherData weatherData = new WeatherData();
+        forecastWeather = ForecastWeather.getForecastWeather();
+    }
+
+    public void getNewForecastWeather(String cityName) throws IOException{
+        String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+
+        WeatherData weatherData = new WeatherData();
+        forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
     }
 
     /*
@@ -22,7 +53,7 @@ public class WeatherGateway {
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
         String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
-        WeatherData weatherData = new WeatherData();
+        weatherdata.WeatherData weatherData = new weatherdata.WeatherData();
         this.currentWeather = currentWeather;
         forecastWeather = weatherData.getJsonData(forecastWeatherUrl).get("list").getAsJsonArray();
     }
@@ -32,7 +63,7 @@ public class WeatherGateway {
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
         String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
-        WeatherData weatherData = new WeatherData();
+        weatherdata.WeatherData weatherData = new weatherdata.WeatherData();
         currentWeather = weatherData.getJsonData(currentWeatherUrl).getAsJsonObject();
         this.forecastWeather = forecastWeather;
     }
@@ -66,43 +97,29 @@ public class WeatherGateway {
         return new WeatherGateway(currentWeather, forecastWeather);
     }*/
 
-    public JsonObject getCurrentWeatherAsJsonObject() {
-        return currentWeather;
-    }
-
-    public JsonArray getForecastWeatherAsJsonArray() {
-        return forecastWeather;
-    }
-
     JsonObject getForecastObjectFromArray(int index) {
-        return forecastWeather.get(index).getAsJsonObject();
+        return forecastWeather.getForecastObjectFromArray(index);
     }
 
     int getForecastArrayLength() {
-        return forecastWeather.size();
+        return forecastWeather.getForecastArrayLength();
     }
 
     double getCurrentTemperature() {
-        return currentWeather.get("main").getAsJsonObject().get("temp").getAsDouble();
+        return currentWeather.getCurrentTemperature();
     }
 
-    double getCurrentTemperatureFromArrayObject(JsonObject obj) {
-        return obj.get("main").getAsJsonObject().get("temp").getAsDouble();
-    }
+    double getCurrentTemperatureFromArrayObject(JsonObject obj) { return currentWeather.getCurrentHumidityFromArrayObject(obj); }
 
-    int getCurrentHumidity() {
-        return currentWeather.get("main").getAsJsonObject().get("humidity").getAsInt();
-    }
+    int getCurrentHumidityFromArrayObject(JsonObject obj) { return currentWeather.getCurrentHumidityFromArrayObject(obj); }
 
-    int getCurrentHumidityFromArrayObject(JsonObject obj) {
-        return obj.get("main").getAsJsonObject().get("humidity").getAsInt();
-    }
+    int getCurrentHumidity() { return currentWeather.getCurrentHumidity(); }
 
     String getCountryCode() {
-        return currentWeather.get("sys").getAsJsonObject().get("country").getAsString();
+        return currentWeather.getCountryCode();
     }
 
-    String getCityName() { return currentWeather.get("name").getAsString(); }
+    String getCityName() { return currentWeather.getCityName(); }
 
     String getCurrentCityData() {
         return "City : " + this.getCityName() + "\n" +
