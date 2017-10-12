@@ -13,7 +13,7 @@ public class UnitTests {
     @BeforeClass
     public static void setUpWeatherObject() throws IOException{
         weatherGateway = WeatherGateway.getWeatherGatewayByCity();
-        System.out.println(weatherGateway.getCurrentCityData());
+        // System.out.println(weatherGateway.getCurrentCityData());
     }
 
     @Test

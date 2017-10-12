@@ -125,6 +125,6 @@ public class WeatherGateway {
         WeatherGateway weatherGateway = WeatherGateway.getWeatherGatewayByCity(cityName);
         System.out.println(weatherGateway.getCurrentCityData());
         */
-        getWeatherGatewayByCityFromFile("");
+        //getWeatherGatewayByCityFromFile("");
     }
 }
