@@ -3,7 +3,7 @@ package weather;
 import com.google.gson.JsonObject;
 import weatherdata.WeatherData;
 
-import java.io.IOException;
+import java.io.*;
 
 public class CurrentWeather {
     private JsonObject currentWeather;
@@ -64,8 +64,27 @@ public class CurrentWeather {
                 "Current Humidity : " + this.getCurrentHumidity();
     }
 
-    public int getCurrentHumidityFromArrayObject(JsonObject obj) {
-        return obj.get("main").getAsJsonObject().get("humidity").getAsInt();
+    public static void writeCityToFile(String cityName) throws IOException{
+        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputFileName), "utf-8"))){
+            writer.write(cityName);
+        }
+    }
+
+    public static String readCityFromFile() throws IOException {
+        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
+        String cityName = "Tallinn";
+
+        BufferedReader br;
+        FileReader fr;
+        fr = new FileReader(inputFileName);
+        br = new BufferedReader(fr);
+
+        String currentLine;
+        if ((currentLine = br.readLine()) != null) {
+            cityName = currentLine;
+        }
+        return cityName;
     }
 
     public static void main(String[] args) throws IOException{

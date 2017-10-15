@@ -55,8 +55,14 @@ public class WeatherGateway {
         return new WeatherGateway(cityName);
     }
 
+    static void writeCityToFile(String cityName) throws IOException{
+        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
+        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputFileName), "utf-8"));
+        writer.write(cityName);
+    }
+
     static void getWeatherGatewayByCityFromFile(String cityName) throws IOException{
-        if (cityName == null || cityName == "") cityName = "Tallinn";
+        if (cityName == null || cityName.equals("")) cityName = "Tallinn";
         String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
         String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
         BufferedReader br;
@@ -90,9 +96,9 @@ public class WeatherGateway {
         return currentWeather.getCurrentTemperature();
     }
 
-    double getCurrentTemperatureFromArrayObject(JsonObject obj) { return currentWeather.getCurrentHumidityFromArrayObject(obj); }
+    double getCurrentTemperatureFromArrayObject(int index) { return forecastWeather.getHumidityFromArrayObject(index); }
 
-    int getCurrentHumidityFromArrayObject(JsonObject obj) { return currentWeather.getCurrentHumidityFromArrayObject(obj); }
+    int getCurrentHumidityFromArrayObject(int index) { return forecastWeather.getHumidityFromArrayObject(index); }
 
     int getCurrentHumidity() { return currentWeather.getCurrentHumidity(); }
 

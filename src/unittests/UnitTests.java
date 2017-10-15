@@ -1,6 +1,8 @@
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import weather.CurrentWeather;
+import weather.ForecastWeather;
 
 import java.io.*;
 import java.util.Random;
@@ -8,11 +10,19 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class UnitTests {
-    private static WeatherGateway weatherGateway;
+    private static CurrentWeather currentWeather;
+    private static ForecastWeather forecastWeather;
 
     @BeforeClass
     public static void setUpWeatherObject() throws IOException{
-        weatherGateway = WeatherGateway.getWeatherGatewayByCity();
+        currentWeather = CurrentWeather.getCurrentWeather();
+        forecastWeather = ForecastWeather.getForecastWeather();
+    }
+
+    @Before
+    public void resetWeatherVariables() throws IOException{
+        currentWeather.getNewCurrentWeather();
+        forecastWeather.getNewForecastWeather();
         // System.out.println(weatherGateway.getCurrentCityData());
     }
 
@@ -21,7 +31,7 @@ public class UnitTests {
         try {
             int minTemp = -273;
             int maxTemp = 500;
-            double currentTemp = weatherGateway.getCurrentTemperature();
+            double currentTemp = currentWeather.getCurrentTemperature();
             assertTrue(currentTemp >= minTemp && currentTemp <= maxTemp);
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
@@ -33,8 +43,8 @@ public class UnitTests {
         try {
             int minTemp = -273;
             int maxTemp = 500;
-            for (int i = 0; i < weatherGateway.getForecastArrayLength(); i++) {
-                double currentTemp = weatherGateway.getCurrentTemperatureFromArrayObject(weatherGateway.getForecastObjectFromArray(i));
+            for (int i = 0; i < forecastWeather.getForecastArrayLength(); i++) {
+                double currentTemp = forecastWeather.getTemperatureFromArrayObject(i);
                 if (!(currentTemp >= minTemp && currentTemp <= maxTemp)) { fail("Array Index " + i + "Temperature out of possible range : " + currentTemp); }
             }
         } catch (Exception e) {
@@ -47,7 +57,7 @@ public class UnitTests {
         try {
             int minRange = 0;
             int maxRange = 100;
-            int currentHumidity = weatherGateway.getCurrentHumidity();
+            int currentHumidity = currentWeather.getCurrentHumidity();
             assertTrue(currentHumidity >= minRange && currentHumidity <= maxRange);
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
@@ -59,8 +69,8 @@ public class UnitTests {
         try {
             int minRange = 0;
             int maxRange = 100;
-            for (int i = 0; i < weatherGateway.getForecastArrayLength(); i++) {
-                int currentHumidity = weatherGateway.getCurrentHumidityFromArrayObject(weatherGateway.getForecastObjectFromArray(i));
+            for (int i = 0; i < forecastWeather.getForecastArrayLength(); i++) {
+                int currentHumidity = forecastWeather.getHumidityFromArrayObject(i);
                 if (!(currentHumidity >= minRange && currentHumidity <= maxRange)) { fail("Array Index " + i + " Humidity out of range : " + currentHumidity); }
             }
         } catch (Exception e) {
@@ -69,9 +79,9 @@ public class UnitTests {
     }
 
     @Test
-    public void testCountryCode() {
+    public void testCurrentWeatherCountryCode() {
         try {
-            String countryCode = weatherGateway.getCountryCode();
+            String countryCode = currentWeather.getCountryCode();
             assertTrue(countryCode.equals("EE"));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
@@ -79,32 +89,82 @@ public class UnitTests {
     }
 
     @Test
-    public void testChosenCityEquals() {
+    public void testForecastWeatherCountryCode() {
         try {
-            assertTrue(weatherGateway.getCurrentWeather().equals(CurrentWeather.getCurrentWeatherByCity(weatherGateway.getCityName())));
+            String countryCode = forecastWeather.getCountryCode();
+            assertTrue(countryCode.equals("EE"));
+        } catch (Exception e) {
+            fail("failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testChosenCityEqualsCurrentWeather() {
+        try {
+            assertTrue(currentWeather.equals(CurrentWeather.getCurrentWeatherByCity(currentWeather.getCityName())));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
     }
 
     @Test
-    public void testRandomCityEquals() {
+    public void testRandomCityEqualsCurrentWeather() {
         try {
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             Random random = new Random();
             String cityName = cityNames[random.nextInt(cityNames.length)];
-            System.out.println("testRandomCityEquals : " + cityName);
+            System.out.println("testRandomCityEqualsCurrentWeather : " + cityName);
 
-            WeatherGateway weatherGatewayTest = weatherGateway;
-            weatherGatewayTest.getNewCurrentWeather(cityName);
-            assertTrue(weatherGatewayTest.getCurrentWeather().equals(CurrentWeather.getCurrentWeatherByCity(cityName)));
+            CurrentWeather currentWeatherTest = currentWeather;
+            currentWeatherTest.getNewCurrentWeather(cityName);
+            assertTrue(currentWeatherTest.equals(CurrentWeather.getCurrentWeatherByCity(cityName)));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
     }
 
     @Test
-    public void testWritingToFile() {
+    public void testChosenCityEqualsForecastWeather() {
+        try {
+            assertTrue(forecastWeather.equals(ForecastWeather.getForecastWeatherByCity(forecastWeather.getCityName())));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testRandomCityEqualsForecastWeather() {
+        try {
+            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
+            Random random = new Random();
+            String cityName = cityNames[random.nextInt(cityNames.length)];
+            System.out.println("testRandomCityEqualsForecastWeather : " + cityName);
+
+            ForecastWeather forecastWeatherTest = forecastWeather;
+            forecastWeatherTest.getNewForecastWeather(cityName);
+            assertTrue(forecastWeatherTest.equals(ForecastWeather.getForecastWeatherByCity(cityName)));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testWritingCityIntoFile() {
+        try {
+            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
+            Random random = new Random();
+            String cityName = cityNames[random.nextInt(cityNames.length)];
+            System.out.println("testWritingCityToFile : " + cityName);
+            CurrentWeather.writeCityToFile(cityName);
+            System.out.println(CurrentWeather.readCityFromFile());
+            assertTrue(CurrentWeather.readCityFromFile().equals(cityName));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGetCityDataFromFile() {
         try {
             // Choose a random city name from the list and write it into the input file.
             // Generate the correct response from .getCurrentCityData and check whether
@@ -112,13 +172,11 @@ public class UnitTests {
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             Random random = new Random();
             String cityName = cityNames[random.nextInt(cityNames.length)];
-            System.out.println("testWritingToFile : " + cityName);
+            System.out.println("testGetCityDataFromFile : " + cityName);
 
-            String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
             String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
-            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputFileName), "utf-8"))){
-                writer.write(cityName);
-            }
+            CurrentWeather.writeCityToFile(cityName);
+
             WeatherGateway.getWeatherGatewayByCityFromFile(cityName);
             CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
             BufferedReader br;
