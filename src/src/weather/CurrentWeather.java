@@ -30,6 +30,50 @@ public class CurrentWeather {
         return new CurrentWeather(cityName);
     }
 
+    public static void writeCityToFile(String cityName) throws IOException{
+        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputFileName), "utf-8"))){
+            writer.write(cityName);
+        }
+    }
+
+    public static String readCityFromFile() throws IOException {
+        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
+        String cityName = "Tallinn";
+
+        BufferedReader br;
+        FileReader fr;
+        fr = new FileReader(inputFileName);
+        br = new BufferedReader(fr);
+
+        String currentLine;
+        if ((currentLine = br.readLine()) != null) {
+            cityName = currentLine;
+        }
+        return cityName;
+    }
+
+    public static CurrentWeather getCurrentWeatherFromFile() throws IOException{
+        String cityName = readCityFromFile();
+        if (cityName == null || cityName.equals("")) cityName = "Tallinn";
+        return new CurrentWeather(cityName);
+    }
+
+    public static void writeCityDataIntoFile() throws IOException{
+        String cityName = readCityFromFile();
+        if (cityName == null || cityName.equals("")) cityName = "Tallinn";
+        String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
+
+        CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName), "utf-8"))){
+            String outputText = currentWeather.getCurrentCityData();
+            String[] outputPieces = outputText.split("\n");
+            for (String outputPiece : outputPieces) {
+                writer.write(outputPiece + "\r\n");
+            }
+        }
+    }
+
     public void getNewCurrentWeather() throws IOException{
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
 
@@ -62,29 +106,6 @@ public class CurrentWeather {
         return "City : " + this.getCityName() + " \n" +
                 "Current Temperature : " + this.getCurrentTemperature() + " \n" +
                 "Current Humidity : " + this.getCurrentHumidity();
-    }
-
-    public static void writeCityToFile(String cityName) throws IOException{
-        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputFileName), "utf-8"))){
-            writer.write(cityName);
-        }
-    }
-
-    public static String readCityFromFile() throws IOException {
-        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
-        String cityName = "Tallinn";
-
-        BufferedReader br;
-        FileReader fr;
-        fr = new FileReader(inputFileName);
-        br = new BufferedReader(fr);
-
-        String currentLine;
-        if ((currentLine = br.readLine()) != null) {
-            cityName = currentLine;
-        }
-        return cityName;
     }
 
     public static void main(String[] args) throws IOException{

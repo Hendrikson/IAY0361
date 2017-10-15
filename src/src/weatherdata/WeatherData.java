@@ -11,14 +11,12 @@ import java.net.HttpURLConnection;
 
 public class WeatherData {
 
-    public JsonObject weatherData;
-
     public JsonObject getJsonData(String Url) throws IOException {
         HttpURLConnection request = HttpUtility.makeHttpGetRequest(Url);
         request.connect();
         JsonParser jp = new JsonParser();
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-        this.weatherData = root.getAsJsonObject();
+        JsonObject weatherData = root.getAsJsonObject();
         request.disconnect();
         return weatherData;
     }

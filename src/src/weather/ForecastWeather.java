@@ -34,60 +34,7 @@ public class ForecastWeather {
         return new ForecastWeather(cityName);
     }
 
-    public void getNewForecastWeather() throws IOException{
-        String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
-
-        WeatherData weatherData = new WeatherData();
-        weatherObject = weatherData.getJsonData(forecastWeatherUrl);
-        forecastWeather = weatherObject.get("list").getAsJsonArray();
-    }
-
-    public void getNewForecastWeather(String cityName) throws IOException{
-        String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
-
-        WeatherData weatherData = new WeatherData();
-        weatherObject = weatherData.getJsonData(forecastWeatherUrl);
-        forecastWeather = weatherObject.get("list").getAsJsonArray();
-    }
-
-    public JsonObject getForecastObjectFromArray(int index) {
-        return forecastWeather.get(index).getAsJsonObject();
-    }
-
-    public int getHumidityFromArrayObject(JsonObject obj) {
-        return obj.get("main").getAsJsonObject().get("humidity").getAsInt();
-    }
-
-    public int getHumidityFromArrayObject(int index) {
-        return forecastWeather.get(index).getAsJsonObject().get("main").getAsJsonObject().get("humidity").getAsInt();
-    }
-
-    public double getTemperatureFromArrayObject(JsonObject obj) {
-        return obj.get("main").getAsJsonObject().get("temp").getAsDouble();
-    }
-
-    public double getTemperatureFromArrayObject(int index) {
-        return forecastWeather.get(index).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsDouble();
-    }
-
-    public int getForecastArrayLength() {
-        return forecastWeather.size();
-    }
-
-    public String getCityName() { return weatherObject.get("city").getAsJsonObject().get("name").getAsString(); }
-
-    public static void main(String[] args) throws IOException{
-        String cityName = "Tallinn";
-        if (args.length > 0) {
-            cityName = args[0];
-        }
-        ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
-        System.out.println(forecastWeather.getCityName());
-        System.out.println(forecastWeather.getHumidityFromArrayObject(0));
-        System.out.println(forecastWeather.getTemperatureFromArrayObject(0));
-    }
-
-    static void writeCityToFile(String cityName) throws IOException{
+    public static void writeCityToFile(String cityName) throws IOException{
         String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputFileName), "utf-8"))){
             writer.write(cityName);
@@ -108,6 +55,95 @@ public class ForecastWeather {
             cityName = currentLine;
         }
         return cityName;
+    }
+
+    public static ForecastWeather getForecastWeatherFromFile() throws IOException{
+        String cityName = readCityFromFile();
+        if (cityName == null || cityName.equals("")) cityName = "Tallinn";
+        return new ForecastWeather(cityName);
+    }
+
+    public static void writeCityDataIntoFile() throws IOException{
+        String cityName = readCityFromFile();
+        if (cityName == null || cityName.equals("")) cityName = "Tallinn";
+        String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
+
+        ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName), "utf-8"))){
+            String outputText = forecastWeather.getCurrentCityData();
+            String[] outputPieces = outputText.split("\n");
+            for (String outputPiece : outputPieces) {
+                writer.write(outputPiece + "\r\n");
+            }
+        }
+    }
+
+    public String getCityName() { return weatherObject.get("city").getAsJsonObject().get("name").getAsString(); }
+
+    public String getCurrentCityData() {
+        StringBuilder returnStr = new StringBuilder("City : " + this.getCityName() + "\n" +
+                "Array Length : " + this.getForecastArrayLength() + "\n");
+        for (int i = 0; i < this.getForecastArrayLength(); i++) {
+            returnStr.append(" ").append(i).append(" : ").append(forecastWeather.get(i).getAsJsonObject().get("dt").getAsString()).append("\n").append("  Humidity : ").append(this.getHumidityFromArrayObject(i)).append("\n").append("  Temperature : ").append(this.getTemperatureFromArrayObject(i)).append("\n");
+        }
+        return returnStr.toString();
+    }
+
+    public void getNewForecastWeather() throws IOException{
+        String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+
+        WeatherData weatherData = new WeatherData();
+        weatherObject = weatherData.getJsonData(forecastWeatherUrl);
+        forecastWeather = weatherObject.get("list").getAsJsonArray();
+    }
+
+    public void getNewForecastWeather(String cityName) throws IOException{
+        String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+
+        WeatherData weatherData = new WeatherData();
+        weatherObject = weatherData.getJsonData(forecastWeatherUrl);
+        forecastWeather = weatherObject.get("list").getAsJsonArray();
+    }
+
+    /*
+    public JsonObject getForecastObjectFromArray(int index) {
+        return forecastWeather.get(index).getAsJsonObject();
+    }
+    */
+
+    /*
+    public int getHumidityFromArrayObject(JsonObject obj) {
+        return obj.get("main").getAsJsonObject().get("humidity").getAsInt();
+    }
+    */
+
+    public int getHumidityFromArrayObject(int index) {
+        return forecastWeather.get(index).getAsJsonObject().get("main").getAsJsonObject().get("humidity").getAsInt();
+    }
+
+    /*
+    public double getTemperatureFromArrayObject(JsonObject obj) {
+        return obj.get("main").getAsJsonObject().get("temp").getAsDouble();
+    }
+    */
+
+    public double getTemperatureFromArrayObject(int index) {
+        return forecastWeather.get(index).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsDouble();
+    }
+
+    public int getForecastArrayLength() {
+        return forecastWeather.size();
+    }
+
+    public static void main(String[] args) throws IOException{
+        String cityName = "Tallinn";
+        if (args.length > 0) {
+            cityName = args[0];
+        }
+        ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
+        System.out.println(forecastWeather.getCityName());
+        System.out.println(forecastWeather.getHumidityFromArrayObject(0));
+        System.out.println(forecastWeather.getTemperatureFromArrayObject(0));
     }
 
     public String getCountryCode() {
