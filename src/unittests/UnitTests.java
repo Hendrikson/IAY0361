@@ -1,3 +1,4 @@
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,6 +25,12 @@ public class UnitTests {
     public void resetWeatherVariables() throws IOException{
         currentWeather.getNewCurrentWeather();
         forecastWeather.getNewForecastWeather();
+    }
+
+    @AfterClass
+    public static void releaseObjects() {
+        currentWeather = null;
+        forecastWeather = null;
     }
 
     @Test
