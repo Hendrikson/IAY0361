@@ -6,7 +6,6 @@ import weather.CurrentWeather;
 import weather.ForecastWeather;
 
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -202,31 +201,30 @@ public class UnitTests {
     public void testGetCityDataFromFileCurrentWeather() {
         try {
             // Choose a random city name from the list and write it into the input file.
-            // Generate the correct response from .getCurrentCityData and check whether
-            // Writing into file was successful or not.
+            // Read it, creating a dummy object, and write the city data into the output file.
+            // Read and compare the contents of the output file to the dummy object's output.
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             Random random = new Random();
             String cityName = cityNames[random.nextInt(cityNames.length)];
 
             String outputFileName = CurrentWeather.getOutputUrl();
             CurrentWeather.writeCityToFile(cityName);
-            CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherFromFile();
             CurrentWeather.writeCityDataIntoFile();
+
+            CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherFromFile();
 
             BufferedReader br;
             FileReader fr;
             fr = new FileReader(outputFileName);
             br = new BufferedReader(fr);
-            StringBuilder fileTextLines = new StringBuilder();
 
             String currentLine;
+            StringBuilder fileTextLines = new StringBuilder();
             while ((currentLine = br.readLine()) != null) {
                 fileTextLines.append(currentLine).append("\n");
             }
             fileTextLines = new StringBuilder(fileTextLines.substring(0, fileTextLines.length() - 1));
-            assertTrue("Choose a name from cityNames, write it into the input file, have it be read and" +
-                            "an object generated from it and check validity of generated data.",
-                    currentWeather.getCurrentCityData().equals(fileTextLines.toString()));
+            assertTrue(currentWeather.getCurrentCityData().equals(fileTextLines.toString()));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -235,31 +233,32 @@ public class UnitTests {
     @Test
     public void testGetCityDataFromFileForecastWeather() {
         try {
+            // Choose a random city name from the list and write it into the input file.
+            // Read it, creating a dummy object, and write the city data into the output file.
+            // Read and compare the contents of the output file to the dummy object's output.
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             Random random = new Random();
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testGetCityDataFromFileForecastWeather : " + cityName);
 
-            String outputFileName = Paths.get("src\\output.txt").toAbsolutePath().toString();
-
+            String outputFileName = ForecastWeather.getOutputUrl();
             ForecastWeather.writeCityToFile(cityName);
-            ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherFromFile();
             ForecastWeather.writeCityDataIntoFile();
+
+            ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherFromFile();
 
             BufferedReader br;
             FileReader fr;
             fr = new FileReader(outputFileName);
             br = new BufferedReader(fr);
-            StringBuilder fileTextLines = new StringBuilder();
 
             String currentLine;
+            StringBuilder fileTextLines = new StringBuilder();
             while ((currentLine = br.readLine()) != null) {
                 fileTextLines.append(currentLine).append("\n");
             }
             fileTextLines = new StringBuilder(fileTextLines.substring(0, fileTextLines.length()));
-            assertTrue("Choose a name from cityNames, write it into the input file, have it be read and" +
-                            "an object generated from it and check validity of generated data.",
-                    forecastWeather.getCurrentCityData().equals(fileTextLines.toString()));
+            assertTrue(forecastWeather.getCurrentCityData().equals(fileTextLines.toString()));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
