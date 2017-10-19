@@ -190,7 +190,6 @@ public class ForecastWeather {
         System.out.println(forecastWeather.getCurrentCityData());
         ForecastWeather.writeCityToFile("Pärnu");
         ForecastWeather.writeCityDataIntoFile();
-        //String url = System.getProperty("user.dir");
     }
 
     public String getCountryCode() {

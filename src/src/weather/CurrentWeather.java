@@ -121,7 +121,6 @@ public class CurrentWeather {
         }
         CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
         System.out.println(currentWeather.getCurrentCityData());
-        System.out.println(CurrentWeather.getInputUrl());
     }
 
     public boolean equals(CurrentWeather currentWeather) {
