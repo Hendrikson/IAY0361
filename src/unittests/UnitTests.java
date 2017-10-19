@@ -18,21 +18,19 @@ public class UnitTests {
 
     @BeforeClass
     public static void setUpWeatherObject() throws IOException{
-        currentWeatherOriginal = CurrentWeather.getCurrentWeather();
-        forecastWeatherOriginal = ForecastWeather.getForecastWeather();
+        currentWeather = CurrentWeather.getCurrentWeather();
+        forecastWeather = ForecastWeather.getForecastWeather();
     }
 
     @Before
     public void resetWeatherVariables() throws IOException{
-        currentWeather = currentWeatherOriginal;
-        forecastWeather = forecastWeatherOriginal;
+        currentWeather.getNewCurrentWeather(currentWeather.getCityName());
+        forecastWeather.getNewForecastWeather(currentWeather.getCityName());
     }
 
     @Test
     public void checkObjects() throws IOException {
         currentWeather.getNewCurrentWeather("Võru");
-        System.out.println(currentWeather.getCityName());
-        System.out.println(currentWeatherOriginal.getCityName());
         assertTrue(currentWeather.equals(currentWeatherOriginal));
     }
 
@@ -205,11 +203,10 @@ public class UnitTests {
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             Random random = new Random();
             String cityName = cityNames[random.nextInt(cityNames.length)];
-            System.out.println("testGetCityDataFromFileCurrentWeather : " + cityName);
+            System.out.println(new File("input.txt").getAbsolutePath());
+            System.out.println(CurrentWeather.testUrl);
 
             String outputFileName = CurrentWeather.getInputUrl();
-
-            System.out.println(CurrentWeather.getInputUrl());
             CurrentWeather.writeCityToFile(cityName);
             CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherFromFile();
             CurrentWeather.writeCityDataIntoFile();

@@ -8,8 +8,12 @@ import java.nio.file.Paths;
 
 public class CurrentWeather {
     private JsonObject currentWeather;
-    private static final String inputUrl = Paths.get("src\\src\\input.txt").toAbsolutePath().toString();
-    private static final String outputUrl = Paths.get("src\\src\\output.txt").toAbsolutePath().toString();
+    //private static final String inputUrl = Paths.get("src\\src\\input.txt").toAbsolutePath().toString();
+    //private static final String outputUrl = Paths.get("src\\src\\output.txt").toAbsolutePath().toString();
+    private static final String inputUrl = new File(System.getProperty("user.dir")).toString() + "\\src\\src\\input.txt";
+    //private static final String inputUrl = new File("input.txt").getAbsolutePath();
+    public static String testUrl = new File("input.txt").getAbsolutePath();
+    private static final String outputUrl = new File(System.getProperty("user.dir")).toString() + "\\src\\src\\output.txt";
 
     private CurrentWeather() throws IOException{
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";

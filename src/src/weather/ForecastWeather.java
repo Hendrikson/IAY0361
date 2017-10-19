@@ -190,6 +190,7 @@ public class ForecastWeather {
         System.out.println(forecastWeather.getCurrentCityData());
         ForecastWeather.writeCityToFile("Pärnu");
         ForecastWeather.writeCityDataIntoFile();
+        System.out.println(CurrentWeather.getInputUrl());
     }
 
     public String getCountryCode() {
@@ -201,4 +202,8 @@ public class ForecastWeather {
                 this.getCityName().equals(forecastWeather.getCityName()) &&
                 this.getCountryCode().equals(forecastWeather.getCountryCode());
     }
+
+    public static String getInputUrl() { return inputUrl; }
+
+    public static String getOutputUrl() { return outputUrl; }
 }
