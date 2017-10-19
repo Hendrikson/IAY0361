@@ -22,8 +22,8 @@ public class UnitTests {
 
     @Before
     public void resetWeatherVariables() throws IOException{
-        currentWeather.getNewCurrentWeather(currentWeather.getCityName());
-        forecastWeather.getNewForecastWeather(currentWeather.getCityName());
+        currentWeather.getNewCurrentWeather();
+        forecastWeather.getNewForecastWeather();
     }
 
     @Test
