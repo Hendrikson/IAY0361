@@ -11,8 +11,6 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class UnitTests {
-    private static CurrentWeather currentWeatherOriginal;
-    private static ForecastWeather forecastWeatherOriginal;
     private static CurrentWeather currentWeather;
     private static ForecastWeather forecastWeather;
 
@@ -30,8 +28,7 @@ public class UnitTests {
 
     @Test
     public void checkObjects() throws IOException {
-        currentWeather.getNewCurrentWeather("Võru");
-        assertTrue(currentWeather.equals(currentWeatherOriginal));
+        assertTrue(currentWeather.equals(CurrentWeather.getCurrentWeather()));
     }
 
     @Test
@@ -203,10 +200,8 @@ public class UnitTests {
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             Random random = new Random();
             String cityName = cityNames[random.nextInt(cityNames.length)];
-            System.out.println(new File("input.txt").getAbsolutePath());
-            System.out.println(CurrentWeather.testUrl);
 
-            String outputFileName = CurrentWeather.getInputUrl();
+            String outputFileName = CurrentWeather.getOutputUrl();
             CurrentWeather.writeCityToFile(cityName);
             CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherFromFile();
             CurrentWeather.writeCityDataIntoFile();

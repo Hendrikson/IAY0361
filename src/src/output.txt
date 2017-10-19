@@ -1,126 +1,126 @@
-City : Parnu
-Highest Temp : 283.07
-Lowest Temp : 271.724
-Highest Humidity : 94
-Lowest Temperature : 71
+City : Tallinn
+Highest Temp : 281.25
+Lowest Temp : 273.314
+Highest Humidity : 100
+Lowest Temperature : 100
 Array Length : 40
  0 : 1508425200
-  Humidity : 71
-  Temperature : 283.07
+  Humidity : 100
+  Temperature : 281.25
  1 : 1508436000
-  Humidity : 77
-  Temperature : 281.27
+  Humidity : 100
+  Temperature : 280.68
  2 : 1508446800
-  Humidity : 80
-  Temperature : 279.82
+  Humidity : 100
+  Temperature : 279.69
  3 : 1508457600
-  Humidity : 85
-  Temperature : 278.399
+  Humidity : 100
+  Temperature : 279.42
  4 : 1508468400
-  Humidity : 78
-  Temperature : 277.277
+  Humidity : 100
+  Temperature : 279.227
  5 : 1508479200
-  Humidity : 77
-  Temperature : 276.776
+  Humidity : 100
+  Temperature : 279.201
  6 : 1508490000
-  Humidity : 92
-  Temperature : 280.997
+  Humidity : 100
+  Temperature : 279.897
  7 : 1508500800
-  Humidity : 81
-  Temperature : 281.536
+  Humidity : 100
+  Temperature : 280.186
  8 : 1508511600
-  Humidity : 73
-  Temperature : 280.474
+  Humidity : 100
+  Temperature : 279.299
  9 : 1508522400
-  Humidity : 79
-  Temperature : 278.549
+  Humidity : 100
+  Temperature : 278.724
  10 : 1508533200
-  Humidity : 86
-  Temperature : 276.378
+  Humidity : 100
+  Temperature : 278.528
  11 : 1508544000
-  Humidity : 80
-  Temperature : 275.061
+  Humidity : 100
+  Temperature : 278.061
  12 : 1508554800
-  Humidity : 81
-  Temperature : 274.872
+  Humidity : 100
+  Temperature : 278.122
  13 : 1508565600
-  Humidity : 83
-  Temperature : 273.674
+  Humidity : 100
+  Temperature : 277.274
  14 : 1508576400
-  Humidity : 94
-  Temperature : 277.71
+  Humidity : 100
+  Temperature : 279.385
  15 : 1508587200
-  Humidity : 85
-  Temperature : 279.454
+  Humidity : 100
+  Temperature : 279.854
  16 : 1508598000
-  Humidity : 72
-  Temperature : 277.815
+  Humidity : 100
+  Temperature : 278.465
  17 : 1508608800
-  Humidity : 80
-  Temperature : 275.005
+  Humidity : 100
+  Temperature : 275.955
  18 : 1508619600
-  Humidity : 74
-  Temperature : 273.446
+  Humidity : 100
+  Temperature : 274.421
  19 : 1508630400
-  Humidity : 76
-  Temperature : 272.615
+  Humidity : 100
+  Temperature : 273.615
  20 : 1508641200
-  Humidity : 74
-  Temperature : 271.989
+  Humidity : 100
+  Temperature : 273.314
  21 : 1508652000
-  Humidity : 75
-  Temperature : 271.724
+  Humidity : 100
+  Temperature : 273.474
  22 : 1508662800
-  Humidity : 90
-  Temperature : 276.293
+  Humidity : 100
+  Temperature : 277.293
  23 : 1508673600
-  Humidity : 89
-  Temperature : 278.059
+  Humidity : 100
+  Temperature : 278.684
  24 : 1508684400
-  Humidity : 76
-  Temperature : 276.849
+  Humidity : 100
+  Temperature : 276.899
  25 : 1508695200
-  Humidity : 79
-  Temperature : 274.841
+  Humidity : 100
+  Temperature : 274.966
  26 : 1508706000
-  Humidity : 83
-  Temperature : 274.092
+  Humidity : 100
+  Temperature : 274.292
  27 : 1508716800
-  Humidity : 83
-  Temperature : 273.625
+  Humidity : 100
+  Temperature : 274.1
  28 : 1508727600
-  Humidity : 82
-  Temperature : 273.755
+  Humidity : 100
+  Temperature : 273.905
  29 : 1508738400
-  Humidity : 83
-  Temperature : 274.042
+  Humidity : 100
+  Temperature : 274.442
  30 : 1508749200
-  Humidity : 87
-  Temperature : 275.348
+  Humidity : 100
+  Temperature : 275.548
  31 : 1508760000
-  Humidity : 81
-  Temperature : 276.4
+  Humidity : 100
+  Temperature : 276.2
  32 : 1508770800
-  Humidity : 74
-  Temperature : 276.063
+  Humidity : 100
+  Temperature : 275.663
  33 : 1508781600
-  Humidity : 73
-  Temperature : 275.766
+  Humidity : 100
+  Temperature : 275.141
  34 : 1508792400
-  Humidity : 74
-  Temperature : 275.555
+  Humidity : 100
+  Temperature : 275.155
  35 : 1508803200
-  Humidity : 76
-  Temperature : 275.333
+  Humidity : 100
+  Temperature : 275.183
  36 : 1508814000
-  Humidity : 79
-  Temperature : 275.479
+  Humidity : 100
+  Temperature : 275.204
  37 : 1508824800
-  Humidity : 81
-  Temperature : 275.481
+  Humidity : 100
+  Temperature : 275.306
  38 : 1508835600
-  Humidity : 82
-  Temperature : 276.128
+  Humidity : 100
+  Temperature : 276.228
  39 : 1508846400
-  Humidity : 80
-  Temperature : 276.484
+  Humidity : 100
+  Temperature : 277.234

@@ -10,8 +10,8 @@ import java.nio.file.Paths;
 public class ForecastWeather {
     private JsonArray forecastWeather;
     private JsonObject weatherObject;
-    private static final String inputUrl = Paths.get("src\\src\\input.txt").toAbsolutePath().toString();
-    private static final String outputUrl = Paths.get("src\\src\\output.txt").toAbsolutePath().toString();
+    private static final String inputUrl = Paths.get("src\\input.txt").toAbsolutePath().toString();
+    private static final String outputUrl = Paths.get("src\\output.txt").toAbsolutePath().toString();
 
     private ForecastWeather() throws IOException{
         String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
