@@ -5,10 +5,13 @@ import com.google.gson.JsonObject;
 import weatherdata.WeatherData;
 
 import java.io.*;
+import java.nio.file.Paths;
 
 public class ForecastWeather {
     private JsonArray forecastWeather;
     private JsonObject weatherObject;
+    private static final String inputUrl = Paths.get("src\\src\\input.txt").toAbsolutePath().toString();
+    private static final String outputUrl = Paths.get("src\\src\\output.txt").toAbsolutePath().toString();
 
     private ForecastWeather() throws IOException{
         String forecastWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
@@ -35,24 +38,28 @@ public class ForecastWeather {
     }
 
     public static void writeCityToFile(String cityName) throws IOException{
-        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputFileName), "utf-8"))){
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputUrl), "utf-8"))){
             writer.write(cityName);
+        } catch (Exception e) {
+            throw new RuntimeException("File not found! Path used : " + inputUrl);
         }
     }
 
     public static String readCityFromFile() throws IOException {
-        String inputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\input.txt";
         String cityName = "Tallinn";
 
         BufferedReader br;
         FileReader fr;
-        fr = new FileReader(inputFileName);
-        br = new BufferedReader(fr);
+        try {
+            fr = new FileReader(inputUrl);
+            br = new BufferedReader(fr);
 
-        String currentLine;
-        if ((currentLine = br.readLine()) != null) {
-            cityName = currentLine;
+            String currentLine;
+            if ((currentLine = br.readLine()) != null) {
+                cityName = currentLine;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("File not found! Path used : " + inputUrl);
         }
         return cityName;
     }
@@ -66,10 +73,9 @@ public class ForecastWeather {
     public static void writeCityDataIntoFile() throws IOException{
         String cityName = readCityFromFile();
         if (cityName == null || cityName.equals("")) cityName = "Tallinn";
-        String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
 
         ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName), "utf-8"))){
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputUrl), "utf-8"))){
             String outputText = forecastWeather.getCurrentCityData();
             String[] outputPieces = outputText.split("\n");
             for (String outputPiece : outputPieces) {
@@ -82,6 +88,10 @@ public class ForecastWeather {
 
     public String getCurrentCityData() {
         StringBuilder returnStr = new StringBuilder("City : " + this.getCityName() + "\n" +
+                "Highest Temp : " + this.getHighestTemperatureFromArray() + "\n" +
+                "Lowest Temp : " + this.getLowestTemperatureFromArray() + "\n" +
+                "Highest Humidity : " + this.getHighestHumidityFromArray() + "\n" +
+                "Lowest Temperature : " + this.getLowestHumidityFromArray() + "\n" +
                 "Array Length : " + this.getForecastArrayLength() + "\n");
         for (int i = 0; i < this.getForecastArrayLength(); i++) {
             returnStr.append(" ").append(i).append(" : ").append(forecastWeather.get(i).getAsJsonObject().get("dt").getAsString()).append("\n").append("  Humidity : ").append(this.getHumidityFromArrayObject(i)).append("\n").append("  Temperature : ").append(this.getTemperatureFromArrayObject(i)).append("\n");
@@ -131,6 +141,42 @@ public class ForecastWeather {
         return forecastWeather.get(index).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsDouble();
     }
 
+    public double getHighestTemperatureFromArray() {
+        double currentHighest = this.getTemperatureFromArrayObject(0);
+        for (int i = 1; i < this.getForecastArrayLength(); i++) {
+            double currentTemp = this.getTemperatureFromArrayObject(i);
+            if (currentHighest < currentTemp) currentHighest = currentTemp;
+        }
+        return currentHighest;
+    }
+
+    public double getLowestTemperatureFromArray() {
+        double currentLowest = this.getTemperatureFromArrayObject(0);
+        for (int i = 1; i < this.getForecastArrayLength(); i++) {
+            double currentTemp = this.getTemperatureFromArrayObject(i);
+            if (currentLowest > currentTemp) currentLowest = currentTemp;
+        }
+        return currentLowest;
+    }
+
+    public int getHighestHumidityFromArray() {
+        int currentHighest = this.getHumidityFromArrayObject(0);
+        for (int i = 1; i < this.getForecastArrayLength(); i++) {
+            int currentHumidity = this.getHumidityFromArrayObject(i);
+            if (currentHighest < currentHumidity) currentHighest = currentHumidity;
+        }
+        return currentHighest;
+    }
+
+    public int getLowestHumidityFromArray() {
+        int currentLowest = this.getHumidityFromArrayObject(0);
+        for (int i = 1; i < this.getForecastArrayLength(); i++) {
+            int currentHumidity = this.getHumidityFromArrayObject(i);
+            if (currentLowest > currentHumidity) currentLowest = currentHumidity;
+        }
+        return currentLowest;
+    }
+
     public int getForecastArrayLength() {
         return forecastWeather.size();
     }
@@ -141,9 +187,10 @@ public class ForecastWeather {
             cityName = args[0];
         }
         ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
-        System.out.println(forecastWeather.getCityName());
-        System.out.println(forecastWeather.getHumidityFromArrayObject(0));
-        System.out.println(forecastWeather.getTemperatureFromArrayObject(0));
+        System.out.println(forecastWeather.getCurrentCityData());
+        ForecastWeather.writeCityToFile("Pärnu");
+        ForecastWeather.writeCityDataIntoFile();
+        //String url = System.getProperty("user.dir");
     }
 
     public String getCountryCode() {

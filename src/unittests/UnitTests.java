@@ -5,6 +5,7 @@ import weather.CurrentWeather;
 import weather.ForecastWeather;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -25,6 +26,14 @@ public class UnitTests {
     public void resetWeatherVariables() throws IOException{
         currentWeather = currentWeatherOriginal;
         forecastWeather = forecastWeatherOriginal;
+    }
+
+    @Test
+    public void checkObjects() throws IOException {
+        currentWeather.getNewCurrentWeather("Võru");
+        System.out.println(currentWeather.getCityName());
+        System.out.println(currentWeatherOriginal.getCityName());
+        assertTrue(currentWeather.equals(currentWeatherOriginal));
     }
 
     @Test
@@ -198,8 +207,9 @@ public class UnitTests {
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testGetCityDataFromFileCurrentWeather : " + cityName);
 
-            String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
+            String outputFileName = CurrentWeather.getInputUrl();
 
+            System.out.println(CurrentWeather.getInputUrl());
             CurrentWeather.writeCityToFile(cityName);
             CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherFromFile();
             CurrentWeather.writeCityDataIntoFile();
@@ -231,7 +241,7 @@ public class UnitTests {
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testGetCityDataFromFileForecastWeather : " + cityName);
 
-            String outputFileName = "C:\\Users\\Karl\\IdeaProjects\\Automaattestimine\\IAY0361\\src\\src\\output.txt";
+            String outputFileName = Paths.get("src\\output.txt").toAbsolutePath().toString();
 
             ForecastWeather.writeCityToFile(cityName);
             ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherFromFile();
