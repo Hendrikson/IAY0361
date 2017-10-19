@@ -188,9 +188,6 @@ public class ForecastWeather {
         }
         ForecastWeather forecastWeather = ForecastWeather.getForecastWeatherByCity(cityName);
         System.out.println(forecastWeather.getCurrentCityData());
-        ForecastWeather.writeCityToFile("Pärnu");
-        ForecastWeather.writeCityDataIntoFile();
-        System.out.println(CurrentWeather.getInputUrl());
     }
 
     public String getCountryCode() {
