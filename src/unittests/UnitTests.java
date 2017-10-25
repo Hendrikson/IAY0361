@@ -172,14 +172,13 @@ public class UnitTests {
         try {
             String line = currentWeather.getCoordinatesAsString();
             Pattern p = Pattern.compile("(^0|^-0[^\\.])|(\\.$)");
-            double x = Double.parseDouble(line.split(" ")[0].substring(1));
-            double y = Double.parseDouble(line.split(" ")[1].substring(0, line.split(" ").length - 1));
+            double x = Double.parseDouble(line.split(" ")[0].replace("(", ""));
+            double y = Double.parseDouble(line.split(" ")[1].replace(")", ""));
             //System.out.println(x + " " + y);
             if(p.matcher(line.split(" ")[0]).find() || p.matcher(line.split(" ")[1]).find()) {
                 fail();
             } else if(x >= -90 && x <= 90 && y >= -180 && y <= 180) {
-                // If correct, return to pass the test.
-                return;
+                // If correct, pass the test.
             } else {
                 fail();
             }
