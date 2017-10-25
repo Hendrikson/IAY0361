@@ -89,9 +89,9 @@ public class CurrentWeather {
 
     public String getCurrentCityData() {
         return "City : " + this.getCityName() + " \n" +
+                "Coordinates : " + this.getCoordinatesAsString() + "\n" +
                 "Current Temperature : " + this.getCurrentTemperature() + " \n" +
-                "Current Humidity : " + this.getCurrentHumidity() + "\n" +
-                "Coordinates : " + this.getCoordinatesAsString();
+                "Current Humidity : " + this.getCurrentHumidity();
     }
 
     public void writeCurrentCityDataToFile() {
@@ -123,4 +123,5 @@ public class CurrentWeather {
     public static String getInputUrl() { return inputUrl; }
 
     public static String getOutputUrl() { return outputUrl; }
+
 }

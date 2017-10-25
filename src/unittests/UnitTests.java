@@ -139,7 +139,7 @@ public class UnitTests {
     }
 
     @Test
-    public void testGetCityDataFromFileCurrentWeather() {
+    public void testGetCityDataFromFile() {
         try {
             // Choose a random city name from the list and write it into the input file.
             // Read it, creating a dummy object, and write the city data into the output file.
@@ -147,6 +147,8 @@ public class UnitTests {
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             Random random = new Random();
             String cityName = cityNames[random.nextInt(cityNames.length)];
+            System.out.println("testGetCityDataFromFile : " + cityName);
+
             currentWeather.getNewCurrentWeather(cityName);
 
             FileWriter fileWriter = new FileWriter();
@@ -159,8 +161,8 @@ public class UnitTests {
             String fileTextLines = fileReader.readLinesFromOutput();
 
             fileTextLines = fileTextLines.substring(0, fileTextLines.length()-1);
-            System.out.println(currentWeather.getCurrentCityData());
-            System.out.println(fileTextLines);
+            //System.out.println(currentWeather.getCurrentCityData());
+            //System.out.println(fileTextLines);
             assertTrue(currentWeather.getCurrentCityData().equals(fileTextLines));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
@@ -186,6 +188,27 @@ public class UnitTests {
             fail("Failure cause : " + e.getMessage());
         }
     }
+
+
+    @Test
+    public void checkCityCoordinateValidity() {
+        try {
+            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
+            String[] cityCoords = new String[]{"(24.75 59.44)", "(24.5 58.39)", "(26.73 58.38)"
+                    , "(27.02 57.83)", "(26.36 59.35)"};
+            Random random = new Random();
+            int randomNum = random.nextInt(cityNames.length);
+            System.out.println("checkCityCoordinateValidity : " + cityNames[randomNum]);
+
+            currentWeather.getNewCurrentWeather(cityNames[randomNum]);
+
+            //System.out.println(cityNames[randomNum] + " " + currentWeather.getCoordinatesAsString() + " " + cityCoords[randomNum]);
+            assertTrue(currentWeather.getCoordinatesAsString().equals(cityCoords[randomNum]));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
 
     @Test
     public void testCurrentWeatherLatitudeValidity(){

@@ -1,4 +1,4 @@
-City : Voru 
-Current Temperature : 268.15 
-Current Humidity : 79
-Coordinates : (27.02 57.83)
+City : Rakvere 
+Coordinates : (26.36 59.35)
+Current Temperature : 273.649 
+Current Humidity : 72
