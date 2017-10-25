@@ -1,3 +1,5 @@
+import file.FileReader;
+import file.FileWriter;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -124,10 +126,10 @@ public class UnitTests {
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testWritingCityToFileCurrentWeather : " + cityName);
 
-            file.FileWriter fileWriter = new file.FileWriter();
+            FileWriter fileWriter = new FileWriter();
             fileWriter.writeCityIntoInputFile(cityName);
 
-            file.FileReader fileReader = new file.FileReader();
+            FileReader fileReader = new FileReader();
 
             assertTrue("Choose a name from cityNames and check whether it's written correctly to file.",
                     fileReader.readCityFromInput().equals(cityName));
@@ -147,11 +149,11 @@ public class UnitTests {
             String cityName = cityNames[random.nextInt(cityNames.length)];
             currentWeather.getNewCurrentWeather(cityName);
 
-            file.FileWriter fileWriter = new file.FileWriter();
+            FileWriter fileWriter = new FileWriter();
             fileWriter.writeCityIntoInputFile(cityName);
             fileWriter.writeDataIntoOutput(currentWeather.getCurrentCityData());
 
-            file.FileReader fileReader = new file.FileReader();
+            FileReader fileReader = new FileReader();
             CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(fileReader.readCityFromInput());
 
             String fileTextLines = fileReader.readLinesFromOutput();
