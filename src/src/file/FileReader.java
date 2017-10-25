@@ -8,7 +8,7 @@ public class FileReader {
     private final String outputUrl = Paths.get("src\\output.txt").toAbsolutePath().toString();
 
     public String readCityFromInput() {
-        String cityName = "";
+        String cityName;
 
         BufferedReader br;
         java.io.FileReader fr;
