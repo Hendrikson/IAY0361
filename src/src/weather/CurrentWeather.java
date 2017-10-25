@@ -1,6 +1,7 @@
 package weather;
 
 import com.google.gson.JsonObject;
+import file.FileReader;
 import weatherdata.WeatherData;
 
 import java.io.*;
@@ -10,8 +11,6 @@ public class CurrentWeather {
     private JsonObject currentWeather;
     private static final String inputUrl = Paths.get("src\\input.txt").toAbsolutePath().toString();
     private static final String outputUrl = Paths.get("src\\output.txt").toAbsolutePath().toString();
-    //private static final String inputUrl = new File(System.getProperty("user.dir")).toString() + "\\src\\src\\input.txt";
-    //private static final String outputUrl = new File(System.getProperty("user.dir")).toString() + "\\src\\src\\output.txt";
 
     private CurrentWeather() throws IOException{
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
@@ -35,52 +34,20 @@ public class CurrentWeather {
         return new CurrentWeather(cityName);
     }
 
-    public static void writeCityToFile(String cityName) throws IOException{
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputUrl), "utf-8"))){
-            writer.write(cityName);
-        } catch (Exception e) {
-            throw new RuntimeException("File not found! Path used : " + inputUrl);
-        }
+    public void writeCityToFile() throws IOException{
+        file.FileWriter fileWriter = new file.FileWriter();
+        fileWriter.writeCityIntoInputFile(this.getCityName());
     }
 
-    public static String readCityFromFile() throws IOException {
-        String cityName = "Tallinn";
+    public String readCityFromFile() throws IOException {
+        String cityName;
 
-        BufferedReader br;
-        FileReader fr;
-        try {
-            fr = new FileReader(inputUrl);
-            br = new BufferedReader(fr);
+        FileReader fileReader = new FileReader();
+        cityName = fileReader.readCityFromInput();
 
-            String currentLine;
-            if ((currentLine = br.readLine()) != null) {
-                cityName = currentLine;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("File not found! Path used : " + inputUrl);
-        }
         return cityName;
     }
 
-    public static CurrentWeather getCurrentWeatherFromFile() throws IOException{
-        String cityName = readCityFromFile();
-        if (cityName == null || cityName.equals("")) throw new RuntimeException("Invalid / No name in file.");
-        return new CurrentWeather(cityName);
-    }
-
-    public static void writeCityDataIntoFile() throws IOException{
-        String cityName = readCityFromFile();
-        if (cityName == null || cityName.equals("")) return;
-
-        CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputUrl), "utf-8"))){
-            String outputText = currentWeather.getCurrentCityData();
-            String[] outputPieces = outputText.split("\n");
-            for (String outputPiece : outputPieces) {
-                writer.write(outputPiece + "\r\n");
-            }
-        }
-    }
 
     public void getNewCurrentWeather() throws IOException{
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
@@ -90,6 +57,16 @@ public class CurrentWeather {
     }
 
     public void getNewCurrentWeather(String cityName) throws IOException{
+        String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
+
+        WeatherData weatherData = new WeatherData();
+        currentWeather = weatherData.getJsonData(currentWeatherUrl).getAsJsonObject();
+    }
+
+    public void getNewCurrentWeatherFromFile() throws IOException {
+        FileReader fileReader = new FileReader();
+        String cityName = fileReader.readCityFromInput();
+
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
@@ -113,16 +90,13 @@ public class CurrentWeather {
     public String getCurrentCityData() {
         return "City : " + this.getCityName() + " \n" +
                 "Current Temperature : " + this.getCurrentTemperature() + " \n" +
-                "Current Humidity : " + this.getCurrentHumidity();
+                "Current Humidity : " + this.getCurrentHumidity() + "\n" +
+                "Coordinates : " + this.getCoordinatesAsString();
     }
 
-    public static void main(String[] args) throws IOException{
-        String cityName = "Tartu";
-        if (args.length > 0) {
-            cityName = args[0];
-        }
-        CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(cityName);
-        System.out.println(currentWeather.getCurrentCityData());
+    public void writeCurrentCityDataToFile() {
+        file.FileWriter fileWriter = new file.FileWriter();
+        fileWriter.writeDataIntoOutput(this.getCurrentCityData());
     }
 
     public boolean equals(CurrentWeather currentWeather) {
@@ -131,6 +105,19 @@ public class CurrentWeather {
                 this.getCurrentTemperature() == currentWeather.getCurrentTemperature() &&
                 this.getCurrentHumidity() == currentWeather.getCurrentHumidity() &&
                 this.getCountryCode().equals(currentWeather.getCountryCode());
+    }
+
+    public double getLongitudeAsDouble() {
+        return currentWeather.get("coord").getAsJsonObject().get("lon").getAsDouble();
+    }
+
+    public double getLatitudeAsDouble() {
+        return currentWeather.get("coord").getAsJsonObject().get("lat").getAsDouble();
+    }
+
+    public String getCoordinatesAsString() {
+        return "(" + this.getLongitudeAsDouble() + " " +
+                this.getLatitudeAsDouble() + ")";
     }
 
     public static String getInputUrl() { return inputUrl; }
