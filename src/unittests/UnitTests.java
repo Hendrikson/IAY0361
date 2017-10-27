@@ -19,8 +19,8 @@ public class UnitTests {
 
     @BeforeClass
     public static void setUpWeatherObject() throws IOException{
-        currentWeather = CurrentWeather.getCurrentWeather();
-        forecastWeather = ForecastWeather.getForecastWeather();
+        currentWeather = new CurrentWeather();
+        forecastWeather = new ForecastWeather();
     }
 
     @Before
@@ -37,7 +37,7 @@ public class UnitTests {
 
     @Test
     public void checkObjects() throws IOException {
-        assertTrue(currentWeather.equals(CurrentWeather.getCurrentWeather()));
+        assertTrue(currentWeather.equals(new CurrentWeather()));
     }
 
     @Test
@@ -95,7 +95,17 @@ public class UnitTests {
     public void testChosenCityEqualsCurrentWeather() {
         try {
             assertTrue("New object created with city name from current object must be equal to current object",
-                    currentWeather.equals(CurrentWeather.getCurrentWeatherByCity(currentWeather.getCityName())));
+                    currentWeather.equals(new CurrentWeather(currentWeather.getCityName())));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testChosenCityEqualsForecastWeather() {
+        try {
+            assertTrue("New object created with city name from current object must be equal to current object",
+                    forecastWeather.equals(new ForecastWeather(forecastWeather.getCityName())));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -109,10 +119,25 @@ public class UnitTests {
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testRandomCityEqualsCurrentWeather : " + cityName);
 
-            CurrentWeather currentWeatherTest = currentWeather;
-            currentWeatherTest.getNewCurrentWeather(cityName);
+            currentWeather.getNewCurrentWeather(cityName);
             assertTrue("Randomly chosen city name will be set to test object and compared to new object created with the same city name.",
-                    currentWeatherTest.equals(CurrentWeather.getCurrentWeatherByCity(cityName)));
+                    currentWeather.equals(new CurrentWeather(cityName)));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testRandomCityEqualsForecastWeather() {
+        try {
+            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
+            Random random = new Random();
+            String cityName = cityNames[random.nextInt(cityNames.length)];
+            System.out.println("testRandomCityEqualsForecastWeather : " + cityName);
+
+            forecastWeather.getNewForecastWeather(cityName);
+            assertTrue("Randomly chosen city name will be set to test object and compared to new object created with the same city name.",
+                    forecastWeather.equals(new ForecastWeather(cityName)));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -156,7 +181,7 @@ public class UnitTests {
             fileWriter.writeDataIntoOutput(currentWeather.getCurrentCityData());
 
             FileReader fileReader = new FileReader();
-            CurrentWeather currentWeather = CurrentWeather.getCurrentWeatherByCity(fileReader.readCityFromInput());
+            CurrentWeather currentWeather = new CurrentWeather(fileReader.readCityFromInput());
 
             String fileTextLines = fileReader.readLinesFromOutput();
 
@@ -191,7 +216,7 @@ public class UnitTests {
 
 
     @Test
-    public void checkCityCoordinateValidity() {
+    public void testRandomCityCoordinateStringValidity() {
         try {
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             String[] cityCoords = new String[]{"(24.75 59.44)", "(24.5 58.39)", "(26.73 58.38)"

@@ -12,20 +12,21 @@ public class CurrentWeather {
     private static final String inputUrl = Paths.get("src\\input.txt").toAbsolutePath().toString();
     private static final String outputUrl = Paths.get("src\\output.txt").toAbsolutePath().toString();
 
-    private CurrentWeather() throws IOException{
+    public CurrentWeather() throws IOException{
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
         currentWeather = weatherData.getJsonData(currentWeatherUrl).getAsJsonObject();
     }
 
-    private CurrentWeather(String cityName) throws IOException{
+    public CurrentWeather(String cityName) throws IOException{
         String currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
         currentWeather = weatherData.getJsonData(currentWeatherUrl).getAsJsonObject();
     }
 
+    /*
     public static CurrentWeather getCurrentWeather() throws IOException{
         return new CurrentWeather();
     }
@@ -33,6 +34,7 @@ public class CurrentWeather {
     public static CurrentWeather getCurrentWeatherByCity(String cityName) throws IOException{
         return new CurrentWeather(cityName);
     }
+    */
 
     public void writeCityToFile() throws IOException{
         file.FileWriter fileWriter = new file.FileWriter();
