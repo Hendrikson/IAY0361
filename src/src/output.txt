@@ -1,4 +1,4 @@
-City : Voru 
-Coordinates : (27.02 57.83)
+City : Tartu 
+Coordinates : (26.73 58.38)
 Current Temperature : 273.15 
-Current Humidity : 94
+Current Humidity : 92
