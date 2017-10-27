@@ -203,7 +203,7 @@ public class UnitTests {
     public void testCoordinatePairAsString(){
         try {
             String line = weatherCurrent.getCoordinatesAsString();
-            Pattern p = Pattern.compile("(^0|^-0[^\\.])|(\\.$)");
+            Pattern p = Pattern.compile("(^0|^-0[^.])|(\\.$)");
             double x = Double.parseDouble(line.split(" ")[0].replace("(", ""));
             double y = Double.parseDouble(line.split(" ")[1].replace(")", ""));
             //System.out.println(x + " " + y);

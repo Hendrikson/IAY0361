@@ -1,4 +1,4 @@
-City : Tartu 
-Coordinates : (26.73 58.38)
-Current Temperature : 273.15 
-Current Humidity : 92
+City : Rakvere 
+Coordinates : (26.36 59.35)
+Current Temperature : 273.729 
+Current Humidity : 94

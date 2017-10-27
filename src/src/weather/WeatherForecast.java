@@ -52,6 +52,14 @@ public class WeatherForecast {
         weatherForecast = weatherObject.get("list").getAsJsonArray();
     }
 
+    public String getCityName() {
+        return weatherObject.getAsJsonObject("city").get("name").getAsString();
+    }
+
+    public int getForecastArrayLength() {
+        return weatherForecast.size();
+    }
+
     public double getTemperatureFromArrayObject(int index) {
         return weatherForecast.get(index).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsDouble();
     }
@@ -72,14 +80,6 @@ public class WeatherForecast {
             if (currentLowest > currentTemp) currentLowest = currentTemp;
         }
         return currentLowest;
-    }
-
-    public int getForecastArrayLength() {
-        return weatherForecast.size();
-    }
-
-    public String getCityName() {
-        return weatherObject.getAsJsonObject("city").get("name").getAsString();
     }
 
     public boolean equals(WeatherForecast weatherForecast) {
