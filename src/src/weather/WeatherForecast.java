@@ -2,6 +2,7 @@ package weather;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+//import file.FileReader;
 import weatherdata.WeatherData;
 
 import java.io.*;
@@ -9,6 +10,8 @@ import java.io.*;
 public class WeatherForecast {
     private JsonArray weatherForecast;
     private JsonObject weatherObject;
+
+    /** BASIC CONSTRUCTORS **/
 
     public WeatherForecast() throws IOException{
         String weatherDataUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
@@ -26,6 +29,8 @@ public class WeatherForecast {
         weatherForecast = weatherObject.get("list").getAsJsonArray();
     }
 
+    /* STATIC FACTORY METHODS (DISABLED) */
+
     /*
     public static WeatherForecast getForecastWeather() throws IOException{
         return new WeatherForecast();
@@ -35,6 +40,8 @@ public class WeatherForecast {
         return new WeatherForecast(cityName);
     }
     */
+
+    /** METHODS TO FETCH NEW WEATHER DATA **/
 
     public void getNewWeatherData() throws IOException{
         String weatherDataUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
@@ -51,6 +58,17 @@ public class WeatherForecast {
         weatherObject = weatherData.getJsonData(weatherDataUrl);
         weatherForecast = weatherObject.get("list").getAsJsonArray();
     }
+
+    /*
+    public void getNewWeatheDataFromFile() throws IOException {
+        file.FileReader fileReader = new FileReader();
+        String cityName = fileReader.readCityFromInput();
+
+        this.getNewWeatherData(cityName);
+    }
+    */
+
+    /** JSON READER METHODS **/
 
     public String getCityName() {
         return weatherObject.getAsJsonObject("city").get("name").getAsString();
@@ -81,6 +99,8 @@ public class WeatherForecast {
         }
         return currentLowest;
     }
+
+    /** WEATHER DATA COMPARISON **/
 
     public boolean equals(WeatherForecast weatherForecast) {
         if (this.getForecastArrayLength() != weatherForecast.getForecastArrayLength()) { return false; }

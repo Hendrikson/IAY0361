@@ -8,6 +8,8 @@ import java.io.*;
 public class WeatherCurrent {
     private JsonObject weatherData;
 
+    /** BASIC CONSTRUCTORS **/
+
     public WeatherCurrent() throws IOException{
         String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
 
@@ -22,6 +24,8 @@ public class WeatherCurrent {
         this.weatherData = weatherData.getJsonData(weatherDataUrl).getAsJsonObject();
     }
 
+    /* STATIC FACTORY METHODS (DISABLED) */
+
     /*
     public static WeatherCurrent getCurrentWeather() throws IOException{
         return new WeatherCurrent();
@@ -32,11 +36,9 @@ public class WeatherCurrent {
     }
     */
 
-    public void writeCityToFile() throws IOException{
-        file.FileWriter fileWriter = new file.FileWriter();
-        fileWriter.writeCityIntoInputFile(this.getCityName());
-    }
+    /* INNER CLASS FILE HANDLING (DISABLED) */
 
+    /*
     public String readCityFromFile() throws IOException {
         String cityName;
 
@@ -46,6 +48,17 @@ public class WeatherCurrent {
         return cityName;
     }
 
+    public void writeCityToFile() throws IOException{
+        file.FileWriter fileWriter = new file.FileWriter();
+        fileWriter.writeCityIntoInputFile(this.getCityName());
+    }
+
+    public void writeCurrentCityDataToFile() {
+        file.FileWriter fileWriter = new file.FileWriter();
+        fileWriter.writeDataIntoOutput(this.getCurrentCityData());
+    }*/
+
+    /** METHODS TO FETCH NEW WEATHER DATA **/
 
     public void getNewWeatherData() throws IOException{
         String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
@@ -65,25 +78,37 @@ public class WeatherCurrent {
         FileReader fileReader = new FileReader();
         String cityName = fileReader.readCityFromInput();
 
-        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
-
-        weatherdata.WeatherData weatherData = new weatherdata.WeatherData();
-        this.weatherData = weatherData.getJsonData(weatherDataUrl).getAsJsonObject();
+        this.getNewWeatherData(cityName);
     }
 
+    /** JSON READER METHODS **/
+
     public double getCurrentTemperature() {
-        return weatherData.get("main").getAsJsonObject().get("temp").getAsDouble();
+        return weatherData.getAsJsonObject("main").get("temp").getAsDouble();
     }
 
     public int getCurrentHumidity() {
-        return weatherData.get("main").getAsJsonObject().get("humidity").getAsInt();
+        return weatherData.getAsJsonObject("main").get("humidity").getAsInt();
     }
 
     public String getCountryCode() {
-        return weatherData.get("sys").getAsJsonObject().get("country").getAsString();
+        return weatherData.getAsJsonObject("sys").get("country").getAsString();
     }
 
     public String getCityName() { return weatherData.get("name").getAsString(); }
+
+    public double getLongitudeAsDouble() {
+        return weatherData.getAsJsonObject("coord").get("lon").getAsDouble();
+    }
+
+    public double getLatitudeAsDouble() {
+        return weatherData.getAsJsonObject("coord").get("lat").getAsDouble();
+    }
+
+    public String getCoordinatesAsString() {
+        return "(" + this.getLongitudeAsDouble() + " " +
+                this.getLatitudeAsDouble() + ")";
+    }
 
     public String getCurrentCityData() {
         return "City : " + this.getCityName() + " \n" +
@@ -92,10 +117,7 @@ public class WeatherCurrent {
                 "Current Humidity : " + this.getCurrentHumidity();
     }
 
-    public void writeCurrentCityDataToFile() {
-        file.FileWriter fileWriter = new file.FileWriter();
-        fileWriter.writeDataIntoOutput(this.getCurrentCityData());
-    }
+    /** WEATHER DATA COMPARISON **/
 
     public boolean equals(WeatherCurrent weatherCurrent) {
         return weatherCurrent != null &&
@@ -103,18 +125,5 @@ public class WeatherCurrent {
                 this.getCurrentTemperature() == weatherCurrent.getCurrentTemperature() &&
                 this.getCurrentHumidity() == weatherCurrent.getCurrentHumidity() &&
                 this.getCountryCode().equals(weatherCurrent.getCountryCode());
-    }
-
-    public double getLongitudeAsDouble() {
-        return weatherData.get("coord").getAsJsonObject().get("lon").getAsDouble();
-    }
-
-    public double getLatitudeAsDouble() {
-        return weatherData.get("coord").getAsJsonObject().get("lat").getAsDouble();
-    }
-
-    public String getCoordinatesAsString() {
-        return "(" + this.getLongitudeAsDouble() + " " +
-                this.getLatitudeAsDouble() + ")";
     }
 }

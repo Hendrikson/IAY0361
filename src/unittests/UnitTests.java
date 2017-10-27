@@ -9,7 +9,6 @@ import weather.WeatherForecast;
 
 import java.io.*;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
@@ -48,24 +47,25 @@ public class UnitTests {
     @Test
     public void testCurrentTemperatureRange(){
         try {
-            int minTemp = -273;
-            int maxTemp = 500;
+            final int minTemp = -273;
+            final int maxTemp = 500;
             double currentTemp = weatherCurrent.getCurrentTemperature();
-            assertTrue("Temperature from current weather object must be in correct range.",
-                    currentTemp >= minTemp && currentTemp <= maxTemp);
+            assertTrue(currentTemp >= minTemp && currentTemp <= maxTemp);
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
     }
 
     @Test
-    public void testForecastTemperatureRanges() {
+    public void testWeatherForecastTemperatureRanges() {
         try {
-            int minTemp = -273;
-            int maxTemp = 500;
+            final int minTemp = -273;
+            final int maxTemp = 500;
             for (int i = 0; i < weatherForecast.getForecastArrayLength(); i++) {
                 double currentTemp = weatherForecast.getTemperatureFromArrayObject(i);
-                if (!(currentTemp >= minTemp && currentTemp <= maxTemp)) { fail("Array Index " + i + "Temperature out of possible range : " + currentTemp); }
+                if (!(currentTemp >= minTemp && currentTemp <= maxTemp)) {
+                    fail("Array Index " + i + " Temperature out of possible range : " + currentTemp);
+                }
             }
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
@@ -75,11 +75,10 @@ public class UnitTests {
     @Test
     public void testHumidityRange() {
         try {
-            int minRange = 0;
-            int maxRange = 100;
+            final int minRange = 0;
+            final int maxRange = 100;
             int currentHumidity = weatherCurrent.getCurrentHumidity();
-            assertTrue("Humidity from current weather object must be in correct range." ,
-                    currentHumidity >= minRange && currentHumidity <= maxRange);
+            assertTrue(currentHumidity >= minRange && currentHumidity <= maxRange);
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -89,8 +88,7 @@ public class UnitTests {
     public void testCurrentWeatherCountryCode() {
         try {
             String countryCode = weatherCurrent.getCountryCode();
-            assertTrue("Country code must be EE.",
-                    countryCode.equals("EE"));
+            assertTrue(countryCode.equals("EE"));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -99,8 +97,7 @@ public class UnitTests {
     @Test
     public void testChosenCityEqualsCurrentWeather() {
         try {
-            assertTrue("New object created with city name from current object must be equal to current object",
-                    weatherCurrent.equals(new WeatherCurrent(weatherCurrent.getCityName())));
+            assertTrue(weatherCurrent.equals(new WeatherCurrent(weatherCurrent.getCityName())));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -109,8 +106,7 @@ public class UnitTests {
     @Test
     public void testChosenCityEqualsWeatherForecast() {
         try {
-            assertTrue("New object created with city name from current object must be equal to current object",
-                    weatherForecast.equals(new WeatherForecast(weatherForecast.getCityName())));
+            assertTrue(weatherForecast.equals(new WeatherForecast(weatherForecast.getCityName())));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -125,8 +121,7 @@ public class UnitTests {
             System.out.println("testRandomCityEqualsCurrentWeather : " + cityName);
 
             weatherCurrent.getNewWeatherData(cityName);
-            assertTrue("Randomly chosen city name will be set to test object and compared to new object created with the same city name.",
-                    weatherCurrent.equals(new WeatherCurrent(cityName)));
+            assertTrue(weatherCurrent.equals(new WeatherCurrent(cityName)));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -141,8 +136,7 @@ public class UnitTests {
             System.out.println("testRandomCityEqualsWeatherForecast : " + cityName);
 
             weatherForecast.getNewWeatherData(cityName);
-            assertTrue("Randomly chosen city name will be set to test object and compared to new object created with the same city name.",
-                    weatherForecast.equals(new WeatherForecast(cityName)));
+            assertTrue(weatherForecast.equals(new WeatherForecast(cityName)));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -161,8 +155,26 @@ public class UnitTests {
 
             FileReader fileReader = new FileReader();
 
-            assertTrue("Choose a name from cityNames and check whether it's written correctly to file.",
-                    fileReader.readCityFromInput().equals(cityName));
+            assertTrue(fileReader.readCityFromInput().equals(cityName));
+        } catch (Exception e) {
+            fail("Failure cause : " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGetCityNameFromFile() {
+        try {
+            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
+            Random random = new Random();
+            String cityName = cityNames[random.nextInt(cityNames.length)];
+            System.out.println("testGetCityNameFromFile : " + cityName);
+
+            FileWriter fileWriter = new FileWriter();
+            fileWriter.writeCityIntoInputFile(cityName);
+
+            weatherCurrent.getNewWeatherDataFromFile();
+
+            assertTrue(weatherCurrent.getCityName().equals(cityName));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -171,25 +183,24 @@ public class UnitTests {
     @Test
     public void testGetCityDataFromFile() {
         try {
-            // Choose a random city name from the list and write it into the input file.
-            // Read it, creating a dummy object, and write the city data into the output file.
-            // Read and compare the contents of the output file to the dummy object's output.
+            // Choose a city name from the list and write it into a file.
+            // Get new weather data by the name in the input file and
+            // write city data into output file. Read to confirm it's correct.
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
             Random random = new Random();
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testGetCityDataFromFile : " + cityName);
 
-            UnitTests.weatherCurrent.getNewWeatherData(cityName);
-
             FileWriter fileWriter = new FileWriter();
             fileWriter.writeCityIntoInputFile(cityName);
-            fileWriter.writeDataIntoOutput(UnitTests.weatherCurrent.getCurrentCityData());
+
+            weatherCurrent.getNewWeatherDataFromFile();
+            fileWriter.writeDataIntoOutput(weatherCurrent.getCurrentCityData());
 
             FileReader fileReader = new FileReader();
             WeatherCurrent weatherCurrent = new WeatherCurrent(fileReader.readCityFromInput());
 
             String fileTextLines = fileReader.readLinesFromOutput();
-
             fileTextLines = fileTextLines.substring(0, fileTextLines.length()-1);
             //System.out.println(weatherCurrent.getCurrentCityData());
             //System.out.println(fileTextLines);
@@ -203,17 +214,21 @@ public class UnitTests {
     public void testCoordinatePairAsString(){
         try {
             String line = weatherCurrent.getCoordinatesAsString();
-            Pattern p = Pattern.compile("(^0|^-0[^.])|(\\.$)");
-            double x = Double.parseDouble(line.split(" ")[0].replace("(", ""));
-            double y = Double.parseDouble(line.split(" ")[1].replace(")", ""));
-            //System.out.println(x + " " + y);
-            if(p.matcher(line.split(" ")[0]).find() || p.matcher(line.split(" ")[1]).find()) {
-                fail();
-            } else if(x >= -90 && x <= 90 && y >= -180 && y <= 180) {
-                // If correct, pass the test.
-            } else {
-                fail();
+            if (line.split(" ").length != 2) {
+                fail("Incorrect input pattern.");
             }
+            double latitude = Double.parseDouble(line.split(" ")[0].replace("(", ""));
+            double longitude = Double.parseDouble(line.split(" ")[1].replace(")", ""));
+            final double minLatitude = -90;
+            final double maxLatitude = 90;
+            final double minLongitude = -180;
+            final double maxLongitude = 180;
+            //System.out.println(x + " " + y);
+            assertTrue("Incorrect input range.",
+                    latitude >= minLatitude && latitude <= maxLatitude
+                            && longitude >= minLongitude && longitude <= maxLongitude);
+        } catch (NumberFormatException e) {
+            fail("Inputs are not convertible to type double.");
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -233,7 +248,8 @@ public class UnitTests {
             weatherCurrent.getNewWeatherData(cityNames[randomNum]);
 
             //System.out.println(cityNames[randomNum] + " " + weatherCurrent.getCoordinatesAsString() + " " + cityCoords[randomNum]);
-            assertTrue(weatherCurrent.getCoordinatesAsString().equals(cityCoords[randomNum]));
+            assertTrue("Coordinates assertion error",
+                    weatherCurrent.getCoordinatesAsString().equals(cityCoords[randomNum]));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -243,8 +259,10 @@ public class UnitTests {
     @Test
     public void testCurrentWeatherLatitudeValidity(){
         try {
+            final double minLatitude = -90;
+            final double maxLatitude = 90;
             double latitude = weatherCurrent.getLatitudeAsDouble();
-            assertTrue(latitude > -90 && latitude < 90);
+            assertTrue(latitude > minLatitude && latitude < maxLatitude);
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
@@ -253,8 +271,10 @@ public class UnitTests {
     @Test
     public void testCurrentWeatherLongitudeValidity(){
         try {
+            final double minLongitude = -180;
+            final double maxLongitude = 180;
             double longitude = weatherCurrent.getLongitudeAsDouble();
-            assertTrue(longitude > -180 && longitude < 180);
+            assertTrue(longitude > minLongitude && longitude < maxLongitude);
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
