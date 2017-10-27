@@ -11,18 +11,18 @@ public class WeatherForecast {
     private JsonObject weatherObject;
 
     public WeatherForecast() throws IOException{
-        String weatherForecastUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
-        weatherObject = weatherData.getJsonData(weatherForecastUrl);
+        weatherObject = weatherData.getJsonData(weatherDataUrl);
         weatherForecast = weatherObject.get("list").getAsJsonArray();
     }
 
     public WeatherForecast(String cityName) throws IOException{
-        String weatherForecastUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
-        weatherObject = weatherData.getJsonData(weatherForecastUrl);
+        weatherObject = weatherData.getJsonData(weatherDataUrl);
         weatherForecast = weatherObject.get("list").getAsJsonArray();
     }
 
@@ -36,19 +36,19 @@ public class WeatherForecast {
     }
     */
 
-    public void getNewWeatherForecast() throws IOException{
-        String weatherForecastUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+    public void getNewWeatherData() throws IOException{
+        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
-        weatherObject = weatherData.getJsonData(weatherForecastUrl);
+        weatherObject = weatherData.getJsonData(weatherDataUrl);
         weatherForecast = weatherObject.get("list").getAsJsonArray();
     }
 
-    public void getNewWeatherForecast(String cityName) throws IOException{
-        String weatherForecastUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+    public void getNewWeatherData(String cityName) throws IOException{
+        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
 
         WeatherData weatherData = new WeatherData();
-        weatherObject = weatherData.getJsonData(weatherForecastUrl);
+        weatherObject = weatherData.getJsonData(weatherDataUrl);
         weatherForecast = weatherObject.get("list").getAsJsonArray();
     }
 

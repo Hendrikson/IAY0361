@@ -5,17 +5,17 @@ import file.FileReader;
 
 import java.io.*;
 
-public class WeatherData {
+public class WeatherCurrent {
     private JsonObject weatherData;
 
-    public WeatherData() throws IOException{
+    public WeatherCurrent() throws IOException{
         String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
 
         weatherdata.WeatherData weatherData = new weatherdata.WeatherData();
         this.weatherData = weatherData.getJsonData(weatherDataUrl).getAsJsonObject();
     }
 
-    public WeatherData(String cityName) throws IOException{
+    public WeatherCurrent(String cityName) throws IOException{
         String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
 
         weatherdata.WeatherData weatherData = new weatherdata.WeatherData();
@@ -23,12 +23,12 @@ public class WeatherData {
     }
 
     /*
-    public static WeatherData getCurrentWeather() throws IOException{
-        return new WeatherData();
+    public static WeatherCurrent getCurrentWeather() throws IOException{
+        return new WeatherCurrent();
     }
 
-    public static WeatherData getCurrentWeatherByCity(String cityName) throws IOException{
-        return new WeatherData(cityName);
+    public static WeatherCurrent getCurrentWeatherByCity(String cityName) throws IOException{
+        return new WeatherCurrent(cityName);
     }
     */
 
@@ -97,12 +97,12 @@ public class WeatherData {
         fileWriter.writeDataIntoOutput(this.getCurrentCityData());
     }
 
-    public boolean equals(WeatherData weatherData) {
-        return weatherData != null &&
-                this.getCityName().equals(weatherData.getCityName()) &&
-                this.getCurrentTemperature() == weatherData.getCurrentTemperature() &&
-                this.getCurrentHumidity() == weatherData.getCurrentHumidity() &&
-                this.getCountryCode().equals(weatherData.getCountryCode());
+    public boolean equals(WeatherCurrent weatherCurrent) {
+        return weatherCurrent != null &&
+                this.getCityName().equals(weatherCurrent.getCityName()) &&
+                this.getCurrentTemperature() == weatherCurrent.getCurrentTemperature() &&
+                this.getCurrentHumidity() == weatherCurrent.getCurrentHumidity() &&
+                this.getCountryCode().equals(weatherCurrent.getCountryCode());
     }
 
     public double getLongitudeAsDouble() {
