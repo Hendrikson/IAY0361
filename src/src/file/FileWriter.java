@@ -8,9 +8,18 @@ import java.nio.file.Paths;
 
 public class FileWriter {
     private final String inputUrl = Paths.get("src\\input.txt").toAbsolutePath().toString();
-    private final String outputUrl = Paths.get("src\\output.txt").toAbsolutePath().toString();
+    private final String outputUrlBase = Paths.get("src").toAbsolutePath().toString();
+    private String outputUrl;
 
-    public void writeCityIntoInputFile(String cityName){
+    public FileWriter(String cityName) {
+        outputUrl = outputUrlBase + "\\" + cityName + ".txt";
+    }
+
+    public void setCity(String cityName) {
+        outputUrl = outputUrlBase + "\\" + cityName + ".txt";
+    }
+
+    public void writeDataIntoInputFile(String cityName){
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(inputUrl), "utf-8"))){
             writer.write(cityName);
         } catch (Exception e) {
@@ -18,7 +27,7 @@ public class FileWriter {
         }
     }
 
-    public void writeDataIntoOutput(String data){
+    public void writeDataIntoOutputFile(String data){
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputUrl), "utf-8"))){
             String[] outputPieces = data.split("\n");
             for (String outputPiece : outputPieces) {

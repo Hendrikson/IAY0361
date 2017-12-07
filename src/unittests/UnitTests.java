@@ -150,8 +150,8 @@ public class UnitTests {
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testWritingCityToFileCurrentWeather : " + cityName);
 
-            FileWriter fileWriter = new FileWriter();
-            fileWriter.writeCityIntoInputFile(cityName);
+            FileWriter fileWriter = new FileWriter(cityName);
+            fileWriter.writeDataIntoInputFile(cityName);
 
             FileReader fileReader = new FileReader();
 
@@ -169,8 +169,8 @@ public class UnitTests {
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testGetCityNameFromFile : " + cityName);
 
-            FileWriter fileWriter = new FileWriter();
-            fileWriter.writeCityIntoInputFile(cityName);
+            FileWriter fileWriter = new FileWriter(cityName);
+            fileWriter.writeDataIntoInputFile(cityName);
 
             weatherCurrent.getNewWeatherDataFromFile();
 
@@ -191,19 +191,17 @@ public class UnitTests {
             String cityName = cityNames[random.nextInt(cityNames.length)];
             System.out.println("testGetCityDataFromFile : " + cityName);
 
-            FileWriter fileWriter = new FileWriter();
-            fileWriter.writeCityIntoInputFile(cityName);
+            FileWriter fileWriter = new FileWriter(cityName);
+            fileWriter.writeDataIntoInputFile(cityName);
 
             weatherCurrent.getNewWeatherDataFromFile();
-            fileWriter.writeDataIntoOutput(weatherCurrent.getCurrentCityData());
+            fileWriter.writeDataIntoOutputFile(weatherCurrent.getCurrentCityData());
 
             FileReader fileReader = new FileReader();
             WeatherCurrent weatherCurrent = new WeatherCurrent(fileReader.readCityFromInput());
 
-            String fileTextLines = fileReader.readLinesFromOutput();
+            String fileTextLines = fileReader.readLinesFromOutput(cityName);
             fileTextLines = fileTextLines.substring(0, fileTextLines.length()-1);
-            //System.out.println(weatherCurrent.getCurrentCityData());
-            //System.out.println(fileTextLines);
             assertTrue(weatherCurrent.getCurrentCityData().equals(fileTextLines));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
@@ -234,7 +232,7 @@ public class UnitTests {
         }
     }
 
-
+    /*
     @Test
     public void testRandomCityCoordinateStringValidity() {
         try {
@@ -248,13 +246,13 @@ public class UnitTests {
             weatherCurrent.getNewWeatherData(cityNames[randomNum]);
 
             //System.out.println(cityNames[randomNum] + " " + weatherCurrent.getCoordinatesAsString() + " " + cityCoords[randomNum]);
-            assertTrue("Coordinates assertion error",
+            assertTrue("Coordinates do not match",
                     weatherCurrent.getCoordinatesAsString().equals(cityCoords[randomNum]));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }
     }
-
+    */
 
     @Test
     public void testCurrentWeatherLatitudeValidity(){

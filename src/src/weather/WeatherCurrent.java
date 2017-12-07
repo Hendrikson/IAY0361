@@ -50,12 +50,12 @@ public class WeatherCurrent {
 
     public void writeCityToFile() throws IOException{
         file.FileWriter fileWriter = new file.FileWriter();
-        fileWriter.writeCityIntoInputFile(this.getCityName());
+        fileWriter.writeDataIntoInputFile(this.getCityName());
     }
 
     public void writeCurrentCityDataToFile() {
         file.FileWriter fileWriter = new file.FileWriter();
-        fileWriter.writeDataIntoOutput(this.getCurrentCityData());
+        fileWriter.writeDataIntoOutputFile(this.getCurrentCityData());
     }*/
 
     /** METHODS TO FETCH NEW WEATHER DATA **/

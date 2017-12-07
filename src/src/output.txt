@@ -1,4 +1,0 @@
-City : Voru 
-Coordinates : (27.02 57.83)
-Current Temperature : 273.15 
-Current Humidity : 97

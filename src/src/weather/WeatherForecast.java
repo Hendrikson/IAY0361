@@ -60,7 +60,7 @@ public class WeatherForecast {
     }
 
     /*
-    public void getNewWeatheDataFromFile() throws IOException {
+    public void getNewWeatherDataFromFile() throws IOException {
         file.FileReader fileReader = new FileReader();
         String cityName = fileReader.readCityFromInput();
 
