@@ -6,11 +6,9 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import weather.WeatherCurrent;
 import weather.WeatherForecast;
-import weatherhelper.WeatherHelper;
 
 import java.io.*;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
