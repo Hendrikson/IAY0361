@@ -1,11 +1,11 @@
+package weather;
+
 import file.FileReader;
 import file.FileWriter;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import weather.WeatherCurrent;
-import weather.WeatherForecast;
 import weatherutil.WeatherUtility;
 
 import java.io.*;

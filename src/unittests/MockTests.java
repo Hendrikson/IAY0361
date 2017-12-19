@@ -16,33 +16,29 @@ import static org.mockito.Mockito.*;
 public class MockTests {
     private static WeatherCurrent weatherCurrentSpy;
     private static WeatherForecast weatherForecastSpy;
-    private static WeatherUtility weatherUtilitySpy;
 
     @BeforeClass
     public static void setUpWeatherObject() throws IOException{
         weatherCurrentSpy = spy(new WeatherCurrent());
         weatherForecastSpy = spy(new WeatherForecast());
-        weatherUtilitySpy = spy(new WeatherUtility());
     }
 
     @Before
     public void resetWeatherVariables() throws IOException {
         weatherCurrentSpy = spy(new WeatherCurrent());
         weatherForecastSpy = spy(new WeatherForecast());
-        weatherUtilitySpy = spy(new WeatherUtility());
     }
 
     @AfterClass
     public static void releaseObjects() {
         weatherCurrentSpy = null;
         weatherForecastSpy = null;
-        weatherUtilitySpy = null;
     }
 
     @Test
     public void testWeatherCurrentGetCurrentCityDataCallsRequiredFunctions() {
-        weatherUtilitySpy.getCityCurrentData(weatherCurrentSpy);
-        verify(weatherUtilitySpy).getCityCurrentData(weatherCurrentSpy);
+        WeatherUtility weatherUtility = new WeatherUtility();
+        weatherUtility.getCityCurrentData(weatherCurrentSpy);
 
         verify(weatherCurrentSpy).getCityName();
         verify(weatherCurrentSpy).getCoordinatesAsString();
@@ -98,10 +94,4 @@ public class MockTests {
             verify(weatherForecastSpy, times(2)).getTemperatureFromArrayObject(i);
         }
     }
-
-    @Test
-    public void test() throws IOException {
-        WeatherUtility.writeToFileAllCitiesData();
-    }
-
 }

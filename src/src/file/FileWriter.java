@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 public class FileWriter {
     private final String inputUrl = Paths.get("src\\input.txt").toAbsolutePath().toString();
@@ -33,17 +32,6 @@ public class FileWriter {
             String[] outputPieces = data.split("\n");
             for (String outputPiece : outputPieces) {
                 writer.write(outputPiece + "\r\n");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("File not found! Path used : " + outputUrl);
-        }
-    }
-
-    public void appendDataIntoOutputFile(String data) {
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputUrl), "utf-8"))){
-            String[] outputPieces = data.split("\n");
-            for (String outputPiece : outputPieces) {
-                writer.append(outputPiece + "\r\n");
             }
         } catch (Exception e) {
             throw new RuntimeException("File not found! Path used : " + outputUrl);

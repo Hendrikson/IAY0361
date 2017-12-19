@@ -12,14 +12,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class WeatherUtility {
-    public static String getCityCurrentData(WeatherCurrent weatherCurrent) {
+    public String getCityCurrentData(WeatherCurrent weatherCurrent) {
         return "City : " + weatherCurrent.getCityName() + " \n" +
                 "Coordinates : " + weatherCurrent.getCoordinatesAsString() + "\n" +
                 "Current Temperature : " + weatherCurrent.getCurrentTemperature() + " \n" +
                 "Current Humidity : " + weatherCurrent.getCurrentHumidity();
     }
 
-    public static String getCityForecastData(WeatherForecast weatherForecast) {
+    public String getCityForecastData(WeatherForecast weatherForecast) {
         List<JsonObject> forecastObjects = weatherForecast.getAllForecastObjects();
         List<JsonObject> objectsOfCurrentDay = new ArrayList<>();
         StringBuilder returnString = new StringBuilder("");
@@ -58,29 +58,23 @@ public class WeatherUtility {
         return returnString.toString();
     }
 
-    public static String getCityBothData(WeatherCurrent weatherCurrent, WeatherForecast weatherForecast) {
-        StringBuilder finalString = new StringBuilder("City : " + weatherCurrent.getCityName() + "\n" +
-                "Coordinates : " + weatherCurrent.getCoordinatesAsString() + "\n");
-        finalString.append(WeatherUtility.getCityForecastData(weatherForecast));
-        finalString.append("Current Temp : ").append(weatherCurrent.getCurrentTemperature());
-        return finalString.toString();
+    public String getCityBothData(WeatherCurrent weatherCurrent, WeatherForecast weatherForecast) {
+        return "City : " + weatherCurrent.getCityName() + "\n" +
+                "Coordinates : " + weatherCurrent.getCoordinatesAsString() + "\n" +
+                this.getCityForecastData(weatherForecast) +
+                "Current Temp : " + weatherCurrent.getCurrentTemperature();
     }
 
-    public static void main(String[] args) throws IOException {
-        WeatherUtility.writeToFileAllCitiesData();
-    }
-
-    public static void writeToFileAllCitiesData() throws IOException {
+    public void writeToFileAllCitiesData() throws IOException {
         FileReader fileReader = new FileReader();
         List<String> cities = fileReader.readCitiesFromInput();
-        List<String> citiesData = new ArrayList<>();
-        for (int i = 0; i < cities.size(); i++) {
-            WeatherCurrent weatherCurrent = new WeatherCurrent(cities.get(i));
-            WeatherForecast weatherForecast = new WeatherForecast(cities.get(i));
+        for (String city : cities) {
+            WeatherCurrent weatherCurrent = new WeatherCurrent(city);
+            WeatherForecast weatherForecast = new WeatherForecast(city);
 
             FileWriter fileWriter = new FileWriter(weatherCurrent.getCityName());
-            System.out.println(WeatherUtility.getCityBothData(weatherCurrent, weatherForecast));
-            fileWriter.writeDataIntoOutputFile(WeatherUtility.getCityBothData(weatherCurrent, weatherForecast));
+            System.out.println(this.getCityBothData(weatherCurrent, weatherForecast));
+            fileWriter.writeDataIntoOutputFile(this.getCityBothData(weatherCurrent, weatherForecast));
         }
     }
 }

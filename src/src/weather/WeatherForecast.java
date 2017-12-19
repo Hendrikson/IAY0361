@@ -102,10 +102,6 @@ public class WeatherForecast {
         return currentLowest;
     }
 
-    public String getDateTime(int i) {
-        return weatherForecast.get(i).getAsJsonObject().get("dt_txt").getAsString();
-    }
-
     public List<JsonObject> getAllForecastObjects() {
         List<JsonObject> forecastObjects = new ArrayList<>();
         for (int i = 0; i < this.getForecastArrayLength(); i++) {
