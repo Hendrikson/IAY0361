@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import weather.WeatherCurrent;
 import weather.WeatherForecast;
+import weatherutil.WeatherUtility;
 
 import java.io.*;
 import java.util.Random;
@@ -194,15 +195,17 @@ public class UnitTests {
             FileWriter fileWriter = new FileWriter(cityName);
             fileWriter.writeDataIntoInputFile(cityName);
 
+            WeatherUtility weatherUtility = new WeatherUtility();
+
             weatherCurrent.getNewWeatherDataFromFile();
-            fileWriter.writeDataIntoOutputFile(weatherCurrent.getCurrentCityData());
+            fileWriter.writeDataIntoOutputFile(weatherUtility.getCityCurrentData(weatherCurrent));
 
             FileReader fileReader = new FileReader();
             WeatherCurrent weatherCurrent = new WeatherCurrent(fileReader.readCityFromInput());
 
             String fileTextLines = fileReader.readLinesFromOutput(cityName);
             fileTextLines = fileTextLines.substring(0, fileTextLines.length()-1);
-            assertTrue(weatherCurrent.getCurrentCityData().equals(fileTextLines));
+            assertTrue(weatherUtility.getCityCurrentData(weatherCurrent).equals(fileTextLines));
         } catch (Exception e) {
             fail("Failure cause : " + e.getMessage());
         }

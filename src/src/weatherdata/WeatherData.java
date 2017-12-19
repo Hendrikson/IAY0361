@@ -25,5 +25,4 @@ public class WeatherData {
         WeatherData data = new WeatherData();
         System.out.println(data.getJsonData("http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71").get("main"));
     }
-
 }

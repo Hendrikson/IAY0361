@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import weather.WeatherCurrent;
 import weather.WeatherForecast;
+import weatherutil.WeatherUtility;
 
 import java.io.*;
 
@@ -15,29 +16,33 @@ import static org.mockito.Mockito.*;
 public class MockTests {
     private static WeatherCurrent weatherCurrentSpy;
     private static WeatherForecast weatherForecastSpy;
+    private static WeatherUtility weatherUtilitySpy;
 
     @BeforeClass
     public static void setUpWeatherObject() throws IOException{
         weatherCurrentSpy = spy(new WeatherCurrent());
         weatherForecastSpy = spy(new WeatherForecast());
+        weatherUtilitySpy = spy(new WeatherUtility());
     }
 
     @Before
     public void resetWeatherVariables() throws IOException {
         weatherCurrentSpy = spy(new WeatherCurrent());
         weatherForecastSpy = spy(new WeatherForecast());
+        weatherUtilitySpy = spy(new WeatherUtility());
     }
 
     @AfterClass
     public static void releaseObjects() {
         weatherCurrentSpy = null;
         weatherForecastSpy = null;
+        weatherUtilitySpy = null;
     }
 
     @Test
     public void testWeatherCurrentGetCurrentCityDataCallsRequiredFunctions() {
-        weatherCurrentSpy.getCurrentCityData();
-        verify(weatherCurrentSpy).getCurrentCityData();
+        weatherUtilitySpy.getCityCurrentData(weatherCurrentSpy);
+        verify(weatherUtilitySpy).getCityCurrentData(weatherCurrentSpy);
 
         verify(weatherCurrentSpy).getCityName();
         verify(weatherCurrentSpy).getCoordinatesAsString();
@@ -92,6 +97,11 @@ public class MockTests {
         for (int i = 0; i < weatherForecastSpy.getForecastArrayLength(); i++) {
             verify(weatherForecastSpy, times(2)).getTemperatureFromArrayObject(i);
         }
+    }
+
+    @Test
+    public void test() throws IOException {
+        WeatherUtility.writeToFileAllCitiesData();
     }
 
 }

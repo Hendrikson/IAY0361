@@ -110,13 +110,6 @@ public class WeatherCurrent {
                 this.getLatitudeAsDouble() + ")";
     }
 
-    public String getCurrentCityData() {
-        return "City : " + this.getCityName() + " \n" +
-                "Coordinates : " + this.getCoordinatesAsString() + "\n" +
-                "Current Temperature : " + this.getCurrentTemperature() + " \n" +
-                "Current Humidity : " + this.getCurrentHumidity();
-    }
-
     /** WEATHER DATA COMPARISON **/
 
     public boolean equals(WeatherCurrent weatherCurrent) {
