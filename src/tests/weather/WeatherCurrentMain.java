@@ -120,25 +120,6 @@ public class WeatherCurrentMain {
     }
 
     @Test
-    public void testRandomCityCoordinateStringValidity() {
-        try {
-            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
-            String[] cityCoords = new String[]{"(24.75 59.44)", "(24.5 58.39)", "(26.73 58.38)"
-                    , "(27.02 57.83)", "(26.36 59.35)"};
-            Random random = new Random();
-            int randomNum = random.nextInt(cityNames.length);
-            System.out.println("testRandomCityCoordinateStringValidity : " + cityNames[randomNum]);
-
-            weatherCurrent.getNewWeatherData(cityNames[randomNum]);
-
-            assertTrue("Coordinates do not match",
-                    weatherCurrent.getCoordinatesAsString().equals(cityCoords[randomNum]));
-        } catch (Exception e) {
-            fail("Failure cause : " + e.getMessage());
-        }
-    }
-
-    @Test
     public void testCurrentWeatherLatitudeValidity(){
         try {
             final double minLatitude = -90;

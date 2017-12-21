@@ -56,21 +56,6 @@ public class WeatherForecastMain {
     }
 
     @Test
-    public void testRandomCityEqualsWeatherForecast() {
-        try {
-            String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};
-            Random random = new Random();
-            String cityName = cityNames[random.nextInt(cityNames.length)];
-            System.out.println("testRandomCityEqualsWeatherForecast : " + cityName);
-
-            weatherForecast.getNewWeatherData(cityName);
-            assertTrue(weatherForecast.equals(new WeatherForecast(cityName)));
-        } catch (Exception e) {
-            fail("Failure cause : " + e.getMessage());
-        }
-    }
-
-    @Test
     public void testWritingCityIntoFileCurrentWeather() {
         try {
             String[] cityNames = new String[]{"Tallinn", "Parnu", "Tartu", "Voru", "Rakvere"};

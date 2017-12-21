@@ -2,13 +2,12 @@ package weather;
 
 import com.google.gson.JsonObject;
 import file.FileReader;
+import weatherdata.WeatherData;
 
 import java.io.*;
 
 public class WeatherCurrent {
     private JsonObject weatherData;
-
-    /** BASIC CONSTRUCTORS **/
 
     public WeatherCurrent() throws IOException{
         String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
@@ -21,6 +20,11 @@ public class WeatherCurrent {
         String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
 
         weatherdata.WeatherData weatherData = new weatherdata.WeatherData();
+        this.weatherData = weatherData.getJsonData(weatherDataUrl).getAsJsonObject();
+    }
+
+    public WeatherCurrent(WeatherData weatherData) throws IOException {
+        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
         this.weatherData = weatherData.getJsonData(weatherDataUrl).getAsJsonObject();
     }
 
