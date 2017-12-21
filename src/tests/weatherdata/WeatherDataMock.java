@@ -7,6 +7,8 @@ import weather.WeatherCurrent;
 import weather.WeatherForecast;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static junit.framework.TestCase.fail;
 import static org.mockito.Mockito.*;
@@ -33,15 +35,15 @@ public class WeatherDataMock {
 
     @Test
     public void testCurrentWeatherCallsGetJsonDataFromWeatherDataMock() {
-        WeatherData weatherDataMock = mock(WeatherData.class);
+        String requestString = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
+        HttpUtility httpUtilityMock = mock(HttpUtility.class);
+        WeatherData weatherDataSpy = spy(new WeatherData(httpUtilityMock));
         try {
-            WeatherCurrent weatherCurrent = new WeatherCurrent(weatherDataMock, "Tallinn"); // Always throws NullPointerException
-        } catch (NullPointerException e) {
-            try {
-                verify(weatherDataMock, times(1)).getJsonData("http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71");
-            } catch (IOException io) {
-                fail("IOException caught!");
-            }
+            when(httpUtilityMock.makeHttpGetRequest(requestString)).thenReturn((HttpURLConnection) new URL(requestString).openConnection());
+            WeatherCurrent weatherCurrent = new WeatherCurrent(weatherDataSpy, "Tallinn");
+
+            verify(weatherDataSpy, times(1)).getJsonData(requestString);
+            verify(httpUtilityMock, times(1)).makeHttpGetRequest(requestString);
         } catch(Exception e) {
             fail("Exception caught: " + e.getMessage());
         }
@@ -49,15 +51,15 @@ public class WeatherDataMock {
 
     @Test
     public void testForecastWeatherCallsGetJsonDataFromWeatherDataMock() {
-        WeatherData weatherDataMock = mock(WeatherData.class);
+        String requestString = "http://api.openweathermap.org/data/2.5/forecast?q=Tallinn&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+        HttpUtility httpUtilityMock = mock(HttpUtility.class);
+        WeatherData weatherDataSpy = spy(new WeatherData(httpUtilityMock));
         try {
-            WeatherForecast weatherForecast = new WeatherForecast(weatherDataMock, "Tallinn"); // Always throws NullPointerException
-        } catch (NullPointerException e) {
-            try {
-                verify(weatherDataMock, times(1)).getJsonData("http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71");
-            } catch (IOException io) {
-                fail("IOException caught!");
-            }
+            when(httpUtilityMock.makeHttpGetRequest(requestString)).thenReturn((HttpURLConnection) new URL(requestString).openConnection());
+            WeatherForecast weatherForecast = new WeatherForecast(weatherDataSpy, "Tallinn");
+
+            verify(weatherDataSpy, times(1)).getJsonData(requestString);
+            verify(httpUtilityMock, times(1)).makeHttpGetRequest(requestString);
         } catch (Exception e) {
             fail("Exception caught: " + e.getMessage());
         }
