@@ -19,7 +19,7 @@ public class WeatherUtility {
                 "Current Humidity : " + weatherCurrent.getCurrentHumidity();
     }
 
-    private String getCityForecastData(WeatherForecast weatherForecast) {
+    private String getCityForecastTemperatures(WeatherForecast weatherForecast) {
         List<JsonObject> forecastObjects = weatherForecast.getAllForecastObjects();
         List<JsonObject> objectsOfCurrentDay = new ArrayList<>();
         StringBuilder returnString = new StringBuilder("");
@@ -61,7 +61,7 @@ public class WeatherUtility {
     private String getCityBothData(WeatherCurrent weatherCurrent, WeatherForecast weatherForecast) {
         return "City : " + weatherCurrent.getCityName() + "\n" +
                 "Coordinates : " + weatherCurrent.getCoordinatesAsString() + "\n" +
-                this.getCityForecastData(weatherForecast) +
+                this.getCityForecastTemperatures(weatherForecast) +
                 "Current Temp : " + weatherCurrent.getCurrentTemperature();
     }
 
@@ -75,6 +75,15 @@ public class WeatherUtility {
             FileWriter fileWriter = new FileWriter(weatherCurrent.getCityName());
             System.out.println(this.getCityBothData(weatherCurrent, weatherForecast));
             fileWriter.writeDataIntoOutputFile(this.getCityBothData(weatherCurrent, weatherForecast));
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            WeatherUtility weatherUtility = new WeatherUtility();
+            System.out.println(weatherUtility.getCityForecastTemperatures(new WeatherForecast("Tallinn")));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

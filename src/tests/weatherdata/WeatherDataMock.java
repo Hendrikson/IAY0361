@@ -1,11 +1,10 @@
 package weatherdata;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import org.junit.Test;
-
-import java.io.*;
+import java.io.IOException;
 
 import static junit.framework.TestCase.fail;
 import static org.mockito.Mockito.*;
@@ -13,7 +12,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class WeatherDataMock {
     @Test
-    public void testWeatherDataMock() {
+    public void testWeatherDataCallsHttpUtilityMockFunction() {
         HttpUtility httpUtilityMock = mock(HttpUtility.class);
         WeatherData weatherDataSpy = spy(new WeatherData(httpUtilityMock));
         try {
