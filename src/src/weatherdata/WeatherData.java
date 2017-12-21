@@ -10,9 +10,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
 public class WeatherData {
+    private HttpUtility httpUtility = new HttpUtility();
+
+    public WeatherData() {}
+
+    WeatherData(HttpUtility httpUtility) {
+        this.httpUtility = httpUtility;
+    }
 
     public JsonObject getJsonData(String Url) throws IOException {
-        HttpURLConnection request = HttpUtility.makeHttpGetRequest(Url);
+        HttpURLConnection request = httpUtility.makeHttpGetRequest(Url);
         request.connect();
         JsonParser jp = new JsonParser();
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));

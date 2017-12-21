@@ -19,7 +19,7 @@ public class WeatherUtility {
                 "Current Humidity : " + weatherCurrent.getCurrentHumidity();
     }
 
-    public String getCityForecastData(WeatherForecast weatherForecast) {
+    private String getCityForecastData(WeatherForecast weatherForecast) {
         List<JsonObject> forecastObjects = weatherForecast.getAllForecastObjects();
         List<JsonObject> objectsOfCurrentDay = new ArrayList<>();
         StringBuilder returnString = new StringBuilder("");
@@ -27,13 +27,13 @@ public class WeatherUtility {
         Integer lastTime = Integer.parseInt(forecastObjects.get(0).getAsJsonObject().get("dt_txt").getAsString().split(" ")[1].split(":")[0]);
         forecastObjects.remove(0);
         Integer dayCount = 1;
-        for(JsonObject wobj:forecastObjects) {
+        for(JsonObject forecastObj:forecastObjects) {
             if (!newDay) {
-                Integer currentTime = Integer.parseInt(wobj.get("dt_txt").getAsString().split(" ")[1].split(":")[0]);
+                Integer currentTime = Integer.parseInt(forecastObj.get("dt_txt").getAsString().split(" ")[1].split(":")[0]);
                 if (currentTime >= 0 && lastTime > currentTime) {
                     newDay = true;
                 } else {
-                    objectsOfCurrentDay.add(wobj);
+                    objectsOfCurrentDay.add(forecastObj);
                 }
             } else {
                 List<Integer> maxTemps = new ArrayList<>();
@@ -49,16 +49,16 @@ public class WeatherUtility {
                 }
                 newDay = false;
                 objectsOfCurrentDay = new ArrayList<>();
-                objectsOfCurrentDay.add(wobj);
+                objectsOfCurrentDay.add(forecastObj);
                 dayCount += 1;
                 if (dayCount > 3) break;
             }
-            lastTime = Integer.parseInt(wobj.get("dt_txt").getAsString().split(" ")[1].split(":")[0]);
+            lastTime = Integer.parseInt(forecastObj.get("dt_txt").getAsString().split(" ")[1].split(":")[0]);
         }
         return returnString.toString();
     }
 
-    public String getCityBothData(WeatherCurrent weatherCurrent, WeatherForecast weatherForecast) {
+    private String getCityBothData(WeatherCurrent weatherCurrent, WeatherForecast weatherForecast) {
         return "City : " + weatherCurrent.getCityName() + "\n" +
                 "Coordinates : " + weatherCurrent.getCoordinatesAsString() + "\n" +
                 this.getCityForecastData(weatherForecast) +
