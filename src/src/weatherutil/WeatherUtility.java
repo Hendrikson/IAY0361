@@ -25,6 +25,10 @@ public class WeatherUtility {
         StringBuilder returnString = new StringBuilder("");
         Boolean newDay = false;
         Integer lastTime = Integer.parseInt(forecastObjects.get(0).getAsJsonObject().get("dt_txt").getAsString().split(" ")[1].split(":")[0]);
+        List<Integer> maxTemps = new ArrayList<>();
+        List<Integer> minTemps = new ArrayList<>();
+        maxTemps.add(forecastObjects.get(0).getAsJsonObject().getAsJsonObject("main").get("temp_max").getAsInt());
+        minTemps.add(forecastObjects.get(0).getAsJsonObject().getAsJsonObject("main").get("temp_min").getAsInt());
         forecastObjects.remove(0);
         Integer dayCount = 1;
         for(JsonObject forecastObj:forecastObjects) {
@@ -36,8 +40,6 @@ public class WeatherUtility {
                     objectsOfCurrentDay.add(forecastObj);
                 }
             } else {
-                List<Integer> maxTemps = new ArrayList<>();
-                List<Integer> minTemps = new ArrayList<>();
                 if (objectsOfCurrentDay.size() != 0) {
                     for (JsonObject weatherObj : objectsOfCurrentDay) {
                         maxTemps.add(weatherObj.get("main").getAsJsonObject().get("temp_max").getAsInt());
