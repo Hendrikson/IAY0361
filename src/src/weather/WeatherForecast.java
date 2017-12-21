@@ -30,6 +30,12 @@ public class WeatherForecast {
         weatherForecast = weatherObject.get("list").getAsJsonArray();
     }
 
+    public WeatherForecast(WeatherData weatherData, String cityName) throws IOException {
+        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=1213b3bd7d7dd50d09ce5464347f3c71";
+        weatherObject = weatherData.getJsonData(weatherDataUrl);
+        weatherForecast = weatherObject.get("list").getAsJsonArray();
+    }
+
     /** METHODS TO FETCH NEW WEATHER DATA **/
 
     void getNewWeatherData() throws IOException{

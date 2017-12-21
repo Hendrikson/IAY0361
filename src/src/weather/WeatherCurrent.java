@@ -23,8 +23,8 @@ public class WeatherCurrent {
         this.weatherData = weatherData.getJsonData(weatherDataUrl).getAsJsonObject();
     }
 
-    public WeatherCurrent(WeatherData weatherData) throws IOException {
-        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tallinn,ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
+    public WeatherCurrent(WeatherData weatherData, String cityName) throws IOException {
+        String weatherDataUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + ",ee&appid=1213b3bd7d7dd50d09ce5464347f3c71";
         this.weatherData = weatherData.getJsonData(weatherDataUrl).getAsJsonObject();
     }
 
